@@ -1,0 +1,60 @@
+const data = [
+  {
+    first_name: "Gemini",
+    image: {uri: "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Gemini_SS.width-1300.jpg"},
+    model: "gemini-pro-vision",
+    category: 'officialBot',
+    disabled: false,
+    desc: "",
+  },
+  {
+    first_name: "gpt-3",
+    image: {uri: "https://eb75zekerce.exactdn.com/wp-content/uploads/2023/02/GPT-3.jpg?lossy=0&sharp=1&resize=1024%2C526&ssl=1"},
+    model: "gpt-3.5-turbo",
+    category: 'officialBot',
+    disabled: true,
+    desc: "",
+  },
+  {
+    first_name: "gpt-3.5-turbo",
+    image: {uri: "https://images.app.goo.gl/Fx9Tz1Ldy711fqmg8"},
+    model: "gpt-3.5-turbo",
+    category: 'officialBot',
+    disabled: true,
+    desc: "",
+  },
+  {
+    first_name: "ChatGPT4",
+    image: {uri: "https://cdn.siasat.com/wp-content/uploads/2023/07/GPT-4.jpg"},
+    model: "gpt-4",
+    category: 'officialBot',
+    disabled: true,
+    desc: "",
+  },
+  {
+    first_name: "llama",
+    image: {uri: "https://e-cryptonews.com/wp-content/uploads/2023/02/Meta-AI-Llama.jpg"},
+    model: "llama",
+    category: 'officialBot',
+    disabled: true,
+    desc: "",
+  },
+  {
+    first_name: "Bing",
+    image: {uri: "https://www.google.com/imgres?imgurl=https://logowik.com/content/uploads/images/bing-new-20238212.logowik.com.webp&imgrefurl=https://logowik.com/bing-new-2023-logo-vector-45567.html&h=650&w=866&tbnid=0tZ698Qwd6YatM&q=bing+logo&tbnh=109&tbnw=145&usg=AI4_-kRFW33ROQ7uNCAQiR4zDV90NgB9lQ&vet=1&docid=99VJ6VdvMynbeM&client=firefox-b-m&sa=X&ved=2ahUKEwjX_fegk6WFAxVv_rsIHVBCBk4Q9QF6BAgNEAw"},
+    model: "bing",
+    category: 'officialBot',
+    disabled: true,
+    desc: "",
+  },
+  {
+    first_name: "Stable Diffusion",
+    image: {uri: "https://typecast.ai/learn/wp-content/uploads/2023/02/23q1_27_main.jpg"},
+    model: "Pixart",
+    category: 'officialBot',
+    disabled: true,
+    desc: "",
+  },
+]
+
+export { data }
