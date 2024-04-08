@@ -16,9 +16,6 @@ import * as SecureStore from 'expo-secure-store'
 import NavBottom from '../screens/NavBottom'
 import { NavAuth } from './NavAuth'
 import { Chat } from './NavStack/chat'
-import { Assistance } from './NavStack/assistance'
-import { Lock } from './NavStack/lock'
-import { OtherPrompt } from './NavStack/otherPrompt'
 import { dbChat } from '../utils/database'
 import { useUserData } from '../utils/useUserData'
 
@@ -41,18 +38,6 @@ function Navigation() {
         headerOptions={{
           headerShown: false
         }}
-      />
-      <Stack.Screen
-        name="assistance"
-        component={Assistance}
-      />
-      <Stack.Screen
-        name="otherPrompt"
-        component={OtherPrompt}
-      />
-      <Stack.Screen
-        name="lock"
-        component={Lock}
       />
     </Stack.Navigator>
   )

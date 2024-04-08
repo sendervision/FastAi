@@ -144,19 +144,6 @@ export function MenuChat({deleteAllConversation, category,tablename}) {
             title="Exporter les messages" 
           />:null
         }
-        {
-          category === "Image Generator"?(
-          <Menu.Item 
-            style={styles.menuItem}
-            titleStyle={{ color: theme.colors.secondary, fontFamily: "Roboto-Medium"}}
-            onPress={() => {
-              setIsVisibleMenu(false)
-              navigation.navigate("otherPrompt")
-            }} 
-            leadingIcon='fountain-pen-tip'
-            title="Voir plus des prompts" 
-          />) : null
-        }
       </Menu>
     </>
   )

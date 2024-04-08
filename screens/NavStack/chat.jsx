@@ -39,6 +39,7 @@ const { width, height } = Dimensions.get("window")
 
 export function Chat({navigation, route}) {
   const theme = useTheme()
+  const preferences = useContext(PreferencesContext)
   const item = route?.params?.item
   const other = route?.params?.other
   const name = item?.first_name
@@ -52,10 +53,10 @@ export function Chat({navigation, route}) {
   const tablename = (name + item?.category + 'dethimo').replace(/ /g, "")
 
   const [messages, setMessages] = React.useState([])
-  const preferences = useContext(PreferencesContext)
   const listUsersToChat = useUserConversation(state => listUsersToChat)
   const toggleListUsersToChat = useUserConversation(state => state.toggleListUsersToChat)
   const [isTyping, setIsTyping] = useState(false)
+
 
   const {
     theme: { dark: isDarkTheme }
@@ -274,17 +275,7 @@ export function Chat({navigation, route}) {
     const date = new Date()
     const image = ""
     const messageSaved = [uuid, valueTextInput, date.toString(), image, String(myID), fullname]
-    const msg = {
-      _id: uuid, 
-      text: valueTextInput,
-      createdAt: date, 
-      received: true,
-      system: preferences.viewMessageWithSystem,
-      user: {
-        _id: myID, 
-        name: fullname,
-      }
-    }
+
     if (item.category === "Image Generator"){
       saveMessage(messageSaved, tablename)
       generateImage(valueTextInput, tablename, item, setIsTyping, saveMessage)

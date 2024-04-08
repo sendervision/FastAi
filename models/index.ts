@@ -1,7 +1,6 @@
 import * as Crypto from 'expo-crypto'
 import * as FileSystem from 'expo-file-system'
 import * as MediaLibrary from 'expo-media-library'
-import { generateImage as getImages } from "./imageModel"
 import { Gpt, GeminiPro, GeminiProVision } from './gemini'
 import { dbMessages } from '../utils/database'
 
@@ -14,7 +13,10 @@ type ItemBot = {
   system: string
 }
 
+const errorMsg = "Il s'est produit une erreur veillez ressayer plus tard et si l'erreur persiste veuille contacter le service client."
+
 const getAllMessages = (tablename) => {
+  const containerMessages = []
   return(
     new Promise((resolve, reject) => {
       dbMessages.transaction(
@@ -22,10 +24,16 @@ const getAllMessages = (tablename) => {
           tx.executeSql(`SELECT * FROM ${tablename};`,
             [],
             (_, { rows }) => {
-              resolve(rows._array)
+              for (msg of rows._array){
+                const text = msg["text"]
+                if (text !== errorMsg){
+                  containerMessages.push(msg)
+                }
+              }
+              resolve(containerMessages)
             },
             (_, error) => {
-              // console.log("Error: ", error)
+              reject("Ils'est passé une erreur")
             }
           )
         },
@@ -85,15 +93,20 @@ export async function getResponse(
   setIsTyping,
   saveMessage_,
 ) {
-  
-  let messages = await getAllMessages(tablename)
-  if (messages.length > 5){
-    messages = messages.slice(-5, -1)
-  }
-  if (itemBot?.model !== "gemini"){
-    const response = await searchResponse(messages, itemBot)
-    setIsTyping(false)
-    const message = [
+  let message;
+  let response;
+  try{
+    let messages = await getAllMessages(tablename)
+    if (messages.length > 5){
+      messages = messages.slice(-5, -1)
+    }
+    if (itemBot?.model !== "gemini"){
+      response = await searchResponse(messages, itemBot)
+    }
+  }catch(error){
+    response = errorMsg
+  }finally{
+    message = [
       Crypto.randomUUID(),
       response, 
       new Date().toString(), 
@@ -101,6 +114,7 @@ export async function getResponse(
       "2", 
       itemBot.first_name
     ]
+    setIsTyping(false)
     saveMessage_(message, tablename)
   }
 }
@@ -138,51 +152,10 @@ export async function generateImage(
   saveMessage_
 ) {
   try{
-    // const key = "HknqNW7yKi0n2BeUb0cGyAI0kZ2mKvD_DyWcHOP0SN0"
-    // const url = "https://api.naga.ac/v1/images/generations"
-    // const headers = {
-    //   "Content-Type": "application/json",
-    //   "Authorization": `Bearer ${key}`
-    // }
-    // const data = {
-    //   model: "dalle-e-3",
-    //   prompt: prompt,
-    //   size: "1024x1024",
-    //   n: 1
-    // }
-    // let response = await fetch(url, {
-    //   method: "POST",
-    //   headers: headers,
-    //   body: JSON.stringify(data)
-    // })
-    // const result = await response.json()
-    // console.log("naga", result)
-
-    const nameImg = prompt.split(" ").slice(0, 5).join('')
-    const nameImage = nameImg.replace(/[^\w\s]/g, "") + new Date().getTime().toString() + ".jpg"
-
-    const fileDir = FileSystem.documentDirectory + nameImage
-    response = await getImages(prompt, itemBot?.model)
-    // console.log("response", response)
-
-    // await FileSystem.writeAsStringAsync(fileDir, response, {encoding: FileSystem.EncodingType.Base64})
-    // await MediaLibrary.saveToLibraryAsync(fileDir)
-
-    // console.log(fileDir)
-
-    // const message = [
-    //   Crypto.randomUUID(),
-    //   prompt,
-    //   new Date().toString(),
-    //   fileDir,
-    //   "2",
-    //   itemBot?.first_name
-    // ]
-
-    // saveMessage_(message, tablename)
+    
     
   } catch(error){
-    console.log("errorIMG -> ", error)
+    // console.log("errorIMG -> ", error)
   }finally{
     setIsTyping(false)
   }

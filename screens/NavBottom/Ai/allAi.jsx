@@ -11,13 +11,15 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native'
-import {useTheme, Button, Text, Surface } from 'react-native-paper'
+import {useTheme, Button, Text, Surface, Card, withTheme } from 'react-native-paper'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import * as Animatable from 'react-native-animatable'
 import { ScrollHorizontalList } from "../../../components/scrollHorizontalList"
 import { IconProfil } from '../../../components/iconProfil'
 import { dta } from '../../../datasAi/data'
+
+const { width, height } = Dimensions.get('window')
 
 function Head() {
   const theme = useTheme()
@@ -32,6 +34,40 @@ function Head() {
 
 function ListFooterComponent() {
   return <View style={{height: 70}} />
+}
+
+function ListHeaderComponent({theme}) {
+  const { getParent } = useNavigation()
+  const parentNavigation = getParent()
+  const item = {
+    first_name: "ChatGPT4",
+    image: {uri: "https://cdn.siasat.com/wp-content/uploads/2023/07/GPT-4.jpg"},
+    model: "gpt-3.5-turbo-0125",
+    category: 'general',
+    desc: "hello world",
+    system: "You are a general artificial intelligence who helps people in all areas",
+  }
+
+  return(
+    <Card style={[styles.card, {backgroundColor: theme.colors.secondaryContainer}]} >
+      <Card.Content>
+        <Text style={[styles.nameAi, {color: theme.colors.secondary}]} >
+          Générale
+        </Text>
+        <Button 
+          mode="contained" 
+          style={[styles.buttonChat, {backgroundColor: theme.colors.secondary}]}
+          labelStyle={{fontFamily: 'Roboto-Medium', fontSize: 14, color: theme.colors.secondaryContainer}}
+          contentStyle={{marginHorizontal: 0,}}
+          onPress={() => {
+            parentNavigation.navigate('chat', {item: item})
+          }}
+        >
+          Commencer la discussion
+        </Button>
+      </Card.Content>
+    </Card>
+  )
 }
 
 export function AllAi({navigation}) {
@@ -54,6 +90,7 @@ export function AllAi({navigation}) {
       <FlatList 
         data={Object.keys(datas)}
         showsVerticalScrollIndicator={false}
+        ListHeaderComponent={withTheme(ListHeaderComponent)}
         ListFooterComponent={ListFooterComponent}
         renderItem={(key) => {
           return(
@@ -112,7 +149,22 @@ const styles = StyleSheet.create({
   },
   textCategory: {
     fontSize: 20,
-    fontFamily: "Poppins-Black"
+    fontFamily: "Poppins-Black",
+
   },
-  
+  card: {
+    marginVertical: 5,
+    elevation: 20,
+    height: height / 6,
+    width: width - 20,
+    alignSelf: 'center',
+  },
+  buttonChat: {
+    borderRadius: 10,
+  },
+  nameAi: {
+    fontFamily: "Poppins-SemiBold",
+    textAlign: "center",
+    fontSize: 30,
+  }
 })

@@ -125,7 +125,7 @@ export function RenderSystemMessage({
             fontSize: fontSize,
           }}
         >
-          {props.currentMessage.text}
+          {props?.currentMessage?.text}
         </TextMessage>
         <View style={styles.containerFooter} >
           <Text 

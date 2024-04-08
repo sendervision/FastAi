@@ -101,9 +101,10 @@ export function ListCategory({navigation, route}) {
         renderItem={({index, item}) => {
           return(
             <Card style={[styles.card, {backgroundColor: theme.colors.secondaryContainer}]} >
-              <Card.Cover 
+              <Image 
                 style={[styles.cardCover, {shadowColor: theme.colors.secondary}]} 
-                source={item.image} 
+                source={item.Image}
+                loadingIndicatorSource={item.Image}
               />
               <Card.Content>
                 <Text variant="titleLarge" style={[styles.nameAi, {color: theme.colors.secondary}]} >

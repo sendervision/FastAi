@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import { useTheme, Text, Button, Switch, Portal, Dialog } from 'react-native-paper'
 import * as SecureStore from 'expo-secure-store'
+import * as MailComposer from 'expo-mail-composer'
 import { HeaderAnimated } from "../../components/headerAnimated"
 import { DialogFontSize } from '../../components/dialog/dialogFontSize'
 import { PreferencesContext } from '../../context/store';
@@ -250,7 +251,22 @@ export function Settings (){
       name: 'Aide',
       icon: 'information',
       backgroundColor: Colors.primary,
-      viewIcon: false
+      component: () => (
+        <Entypo 
+          name="mail"
+          size={30}
+          color={theme.colors.secondary}
+          onPress={async () => {
+            if(await MailComposer.isAvailableAsync()){
+              await MailComposer.composeAsync({
+                bccRecipients: ["benenoc@yahoo.com"],
+                subject: "Demander d'aide sur l'application Moon",
+                isHtml: Platform.OS === "android"? false : true
+              })
+            }
+          }}
+        />
+      )
     },
     {
       name: 'Partager à vos amis',
@@ -261,7 +277,7 @@ export function Settings (){
           name="share-social-sharp" 
           size={25}
           style={{marginRight: 10}}
-          color={theme.colors.primary}
+          color={theme.colors.secondary}
         />
       )
     },
