@@ -11,6 +11,7 @@
     "preview": {
       "distribution": "internal",
       "channel": "preview"
+      "gradleCommand": ".apk"
     },
     "production": {
       "channel": "production"
