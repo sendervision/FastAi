@@ -47,26 +47,30 @@ export async function GeminiPro(
 export async function GeminiProVision(answer=null, imageBase64=null) {
   try{
     if (!imageBase64){
-      const respo = await Gpt(model="gpt-4", [{role: "user", content: answer}])
+      const respo = await Gpt(model="gpt-3.5-turbo", [{role: "user", content: answer}])
+
       return respo
-    }
-    answer = answer? answer : "Decrivez cette image"
-
-    const tokenGemini = "AIzaSyAY6ww3neNQm3HZAB47OFw57EcRE0n6ONA"
-    const gemini = new GoogleGenerativeAI(tokenGemini)
-
-    const model = gemini.getGenerativeModel({model: "gemini-pro-vision"})
-    const image = {
-      inlineData: {
-        data: imageBase64,
-        mimeType: "image/jpeg"
+    }else{
+      answer = answer? answer : "Decrivez cette image"
+      const tokenGemini = "AIzaSyAY6ww3neNQm3HZAB47OFw57EcRE0n6ONA"
+      const gemini = new GoogleGenerativeAI(tokenGemini)
+      const model = gemini.getGenerativeModel({model: "gemini-pro-vision"})
+      const image = {
+        inlineData: {
+          data: imageBase64,
+          mimeType: "image/jpeg"
+        }
       }
+      const result = await model.generateContent([answer, image])
+      const response = await result.response.text()
+      return response
     }
-    const result = await model.generateContent([answer, image])
-    const response = await result.response.text()
-    return response
     // Promise
   }catch(error){
+    console.log("error: ", error)
+    if (error === "[Error: [GoogleGenerativeAI Error]: Candidate was blocked due to SAFETY]"){
+      return "Ces types d'images ne sont pas prise en charge"
+    }
     return "Il s'est passé une erreur veuillez vérifier si vous avez une connexion internet et si c'est le cas réessayez votre question et si l'erreur persiste contacter l'assistance technique."
   }
 }

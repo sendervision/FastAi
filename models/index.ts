@@ -100,7 +100,9 @@ export async function getResponse(
     if (messages.length > 5){
       messages = messages.slice(-5, -1)
     }
-    if (itemBot?.model !== "gemini"){
+    if (itemBot?.model === "gemini" | itemBot?.model === "gemini-pro-vision"){
+      response = await GeminiProVision(question, "")
+    }else{
       response = await searchResponse(messages, itemBot)
     }
   }catch(error){

@@ -28,10 +28,10 @@ const headerHeight = 300;
 const headerFinalHeight = 70;
 const imageSize = (headerHeight / 3) * 2;
 
-const BoxedIcon = ({ name, backgroundColor }) => {
+const BoxedIcon = ({ name, backgroundColor, color }) => {
   return (
     <View style={{ backgroundColor, padding: 4, borderRadius: 6 }}>
-      <Ionicons name={name} size={22} color={'#fff'} />
+      <Ionicons name={name} size={25} color={color? color : '#fff'} />
     </View>
   );
 };
@@ -69,7 +69,11 @@ function BlockSetting({data, isDarkTheme}) {
         )}
         renderItem={({ item }) => {
           return<TouchableOpacity style={[styles.item]} activeOpacity={1} disabled={item.disabled}>
-            <BoxedIcon name={item.icon} backgroundColor={item.disabled? "gray":item.backgroundColor} />
+            <BoxedIcon 
+              name={item.icon} 
+              backgroundColor={item.disabled? "gray":item.backgroundColor} 
+              color={item?.color}
+            />
 
             <Text 
               style={{ 
@@ -167,8 +171,9 @@ export function Settings (){
   const devices = [
     {
       name: 'Mode sombre',
-      icon: 'moon',
+      icon: isDarkTheme? 'moon' : "sunny",
       backgroundColor: theme.colors.secondary,
+      color: theme.colors.secondaryContainer,
       component: () => (
         <Switch 
           value={isDarkTheme} 
@@ -176,14 +181,14 @@ export function Settings (){
         />
       )
     },
-    {
-      name: 'Taille de la police',
-      icon: 'text',
-      backgroundColor: Colors.yellow,
-      //component: () =>(
-        // <FontSizeComponent />
-      //)
-    },
+    // {
+    //   name: 'Taille de la police',
+    //   icon: 'text',
+    //   backgroundColor: Colors.yellow,
+    //   //component: () =>(
+    //     // <FontSizeComponent />
+    //   //)
+    // },
     // {
     //   name: 'Couleur primaire',
     //   icon: 'color-filter',
@@ -365,7 +370,7 @@ export function Settings (){
           <BlockSetting data={items} isDarkTheme={isDarkTheme}/>
 
           <BlockSetting data={support} isDarkTheme={isDarkTheme}/>
-          <Button 
+          {/*<Button 
             mode="contained"
             contentStyle={{backgroundColor: theme.colors.secondary}}
             labelStyle={{fontSize: 14, }}
@@ -382,7 +387,7 @@ export function Settings (){
             style={{...styles.buttonSignOut, marginBottom: 20}}
           >
             Supprimer mon compte
-          </Button>
+          </Button>*/}
         </ScrollView>
       </View>
       {/*<ComponentTheme ref={bottomSheetRefTheme} />*/}

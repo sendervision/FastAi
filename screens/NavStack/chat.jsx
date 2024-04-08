@@ -242,6 +242,7 @@ export function Chat({navigation, route}) {
   }
 
   const sendImageMessage = (uri, text="") => {
+    setIsTyping(true)
     const uuid = Crypto.randomUUID()
     const date = new Date()
     const msg = {
@@ -256,14 +257,8 @@ export function Chat({navigation, route}) {
         name: fullname,
       }
     }
-    saveMessage([
-      uuid,
-      text, 
-      date.toString(), 
-      uri, 
-      String(myID), 
-      fullname
-    ], tablename)
+    const messageSaved = [uuid, text, date.toString(), uri, String(myID), fullname]
+    saveMessage(messageSaved, tablename)
     setIsTyping(true)
     getResponseGemini(text, uri, tablename, item, setIsTyping, saveMessage)
     checkBotAndInsertBotInDB()
@@ -275,12 +270,6 @@ export function Chat({navigation, route}) {
     const date = new Date()
     const image = ""
     const messageSaved = [uuid, valueTextInput, date.toString(), image, String(myID), fullname]
-
-    if (item.category === "Image Generator"){
-      saveMessage(messageSaved, tablename)
-      generateImage(valueTextInput, tablename, item, setIsTyping, saveMessage)
-      return
-    }
 
     saveMessage(messageSaved, tablename)
     getResponse(
