@@ -75,6 +75,13 @@ export function AllAi({navigation}) {
   const { getParent } = useNavigation()
   const parentNavigation = getParent()
 
+  // useEffect(() => {
+  //   parentNavigation?.getParent().reset({
+  //      index: 0,
+  //      routes: [{name: "navauth"}]
+  //   })
+  // }, [])
+
   const dataGroupThree = []
   let datas = {}
   for (let ai of dta){

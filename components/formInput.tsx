@@ -47,15 +47,19 @@ export default function FormInput({placeholder, value, onChangeText, left, right
         }}
         underlineStyle={{
           backgroundColor: theme.colors.secondary,
-          textAlignVertical: 'center',
+          // textAlignVertical: 'center',
         }}
         contentStyle={{
           fontFamily: 'Poppins-SemiBold',
           // backgroundColor: theme.colors.secondaryContainer,
           color: theme.colors.secondary,
           textAlignVertical: 'center',
+          height: 50,
+          paddingBottom: 5,
         }}
         placeholderTextColor={theme.colors.outlined}
+        dense
+        textAlignVertical="center"
         {...otherProps}
 
       />
@@ -81,11 +85,10 @@ export default function FormInput({placeholder, value, onChangeText, left, right
 const styles = StyleSheet.create({
   input: {
     width: width / 1.2,
-    height: 55,
+    height: 60,
     marginTop: 20,
     fontSize: 18,
     fontWeight: '700',
-    color: "red",
     textAlignVertical: "center",
   }
 })

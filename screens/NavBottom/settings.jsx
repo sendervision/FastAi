@@ -77,10 +77,9 @@ function BlockSetting({data, isDarkTheme}) {
 
             <Text 
               style={{ 
-                fontSize: 16, 
+                fontSize: 18, 
                 flex: 1, 
                 color: item.disabled? "gray": theme.colors.secondary,
-                fontFamily: 'Roboto-Medium' 
               }}
             >
               {item.name}
@@ -211,7 +210,7 @@ export function Settings (){
   const items = [
     {
       name: 'Sécurité',
-      icon: 'lock-closed',
+      icon: isSecurityActivate? 'lock-closed' : "lock-open",
       backgroundColor: '#33A5D1',
       component: () => (
         <Entypo 

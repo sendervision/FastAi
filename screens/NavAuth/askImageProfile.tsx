@@ -70,14 +70,6 @@ function AskImageProfile ({navigation}){
   const [viewImage, setViewImage] = useState(false)
   const updateDatasUser = useUserData(state => state.updateDatasUser)
 
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== "web") {
-        await ImagePicker.requestCameraPermissionsAsync();
-        await ImagePicker.requestMediaLibraryPermissionsAsync()
-      }
-    })();
-  }, []);
 
   async function openCameraOrGalerie(type: string) {
     let response;
@@ -170,7 +162,7 @@ function AskImageProfile ({navigation}){
 
   function IconImageUpload() {
     return(
-      <View
+      <Pressable
       style={{
         height: 200,
         width: 200,
@@ -181,6 +173,13 @@ function AskImageProfile ({navigation}){
         alignItems: 'center',
         justifyContent: 'center'
       }}
+      onPress={async () => {
+        if (Platform.OS !== "web") {
+            await ImagePicker.requestCameraPermissionsAsync();
+            await ImagePicker.requestMediaLibraryPermissionsAsync()
+        }
+        setVisibleDialogImage(true)
+      }}
       >
         <FontAwesome5 
           name="upload" 
@@ -188,7 +187,7 @@ function AskImageProfile ({navigation}){
           color={theme.colors.secondary}
           
         />
-        <Text onPress={() => setVisibleDialogImage(true)}
+        <Text           
           style={{
             color: theme.colors.secondary,
             fontSize: 14,
@@ -200,7 +199,7 @@ function AskImageProfile ({navigation}){
           image
         </Text>
         
-      </View>
+      </Pressable>
     )
   }
 

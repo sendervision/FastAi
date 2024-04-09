@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { View, TextInput, StyleSheet, Dimensions } from 'react-native'
+import { View, TextInput, StyleSheet, Dimensions, Platform } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { Ionicons, FontAwesome } from '@expo/vector-icons'
+import * as ImagePicker from "expo-image-picker"
 
 const { width, height } = Dimensions.get("window")
 
@@ -58,7 +59,13 @@ export function InputMessage({onPressCamera, onSendQuestion}) {
           size={30}
           color={theme.colors.secondary}
           style={[styles.icon,{ backgroundColor: theme.colors.secondaryContainer}]}
-          onPress={onPressCamera}
+          onPress={async () => {
+            if (Platform.OS !== "web") {
+                await ImagePicker.requestCameraPermissionsAsync();
+                await ImagePicker.requestMediaLibraryPermissionsAsync()
+            }
+            onPressCamera()
+          }}
         /> : 
         <SendIcon 
           color={theme.colors.secondary} 

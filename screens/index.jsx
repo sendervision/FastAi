@@ -19,6 +19,7 @@ import { Chat } from './NavStack/chat'
 import { dbChat } from '../utils/database'
 import { useUserData } from '../utils/useUserData'
 
+const StackApp = createStackNavigator()
 const Stack = createStackNavigator()
 
 function Navigation() {
@@ -142,11 +143,36 @@ export default function Moon() {
       <React.Fragment>
         <NotificationsProvider>
           <BottomSheetModalProvider>
-            {
-              isAuth?
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+
+              }}
+            >
+              {
+                !isAuth? (
+                  <Stack.Screen
+                    name="navauth"
+                    component={NavAuth}
+                  />
+                ):(
+                  <Stack.Screen
+                    name="navapp"
+                    component={Navigation}
+                    headerOptions={{
+                      headerShown: false
+                    }}
+                  />
+                )
+
+
+              }
+            </Stack.Navigator>
+            {/*
+              false?
               <Navigation />:
               <NavAuth />
-            }
+            */}
           </BottomSheetModalProvider>
         </NotificationsProvider>
       </React.Fragment>

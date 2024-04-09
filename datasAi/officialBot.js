@@ -17,7 +17,7 @@ const data = [
   },
   {
     first_name: "gpt-3.5-turbo",
-    image: {uri: "https://images.app.goo.gl/Fx9Tz1Ldy711fqmg8"},
+    image: {uri: "https://urlz.fr/qdvf"},
     model: "gpt-3.5-turbo",
     category: 'officialBot',
     disabled: true,
@@ -41,16 +41,8 @@ const data = [
   },
   {
     first_name: "Bing",
-    image: {uri: "https://www.google.com/imgres?imgurl=https://logowik.com/content/uploads/images/bing-new-20238212.logowik.com.webp&imgrefurl=https://logowik.com/bing-new-2023-logo-vector-45567.html&h=650&w=866&tbnid=0tZ698Qwd6YatM&q=bing+logo&tbnh=109&tbnw=145&usg=AI4_-kRFW33ROQ7uNCAQiR4zDV90NgB9lQ&vet=1&docid=99VJ6VdvMynbeM&client=firefox-b-m&sa=X&ved=2ahUKEwjX_fegk6WFAxVv_rsIHVBCBk4Q9QF6BAgNEAw"},
+    image: {uri: "https://urlz.fr/qdvc"},
     model: "bing",
-    category: 'officialBot',
-    disabled: true,
-    desc: "",
-  },
-  {
-    first_name: "Stable Diffusion",
-    image: {uri: "https://typecast.ai/learn/wp-content/uploads/2023/02/23q1_27_main.jpg"},
-    model: "Pixart",
     category: 'officialBot',
     disabled: true,
     desc: "",

@@ -17,6 +17,7 @@ import {
 	Divider,
 } from 'react-native-paper'
 import * as SecureStore from 'expo-secure-store'
+import { useNavigation } from '@react-navigation/native'
 import { BackIcon } from "../components/backIcon"
 import { Terms } from '../../TextTerms/terms'
 import { Cond } from '../../TextTerms/cond'
@@ -30,10 +31,10 @@ function TermConditions({navigation}) {
 	const theme = useTheme()
 	const DataCondTerms = [...Terms, ...Cond]
 	const [acceptTerms, setAcceptTerms] = useState("unchecked")
-  const userData = useUserData()
-  const updateDatasUser = useUserData(state => state.updateDatasUser)
-  const [isVisibleIndicator, setIsVisibleIndicator] = useState(false)
-
+	const userData = useUserData()
+	const updateDatasUser = useUserData(state => state.updateDatasUser)
+	const [isVisibleIndicator, setIsVisibleIndicator] = useState(false)
+	const { getParent } = useNavigation()
   
   function saveDatasUserInDB(uid) {
     try{
@@ -46,7 +47,6 @@ function TermConditions({navigation}) {
 
       const photoURL = userData?.photoURL? {uri: userData?.photoURL} : require("../../assets/avatar.png")
       setIsVisibleIndicator(false)
-
       updateDatasUser({firstname: userData?.firstname})
       updateDatasUser({lastname: userData?.lastname})
       updateDatasUser({phonenumber: userData?.phonenumber})
@@ -56,19 +56,19 @@ function TermConditions({navigation}) {
       updateDatasUser({password: "none"})
 
     }catch(e){
-      console.log(e)
       alert("Il s'est passé une erreur veillez fermer et réouvrir l'application.")
     }
     
   }
 
 	async function submitForm() {
-    setIsVisibleIndicator(true)
-    setAcceptTerms(false)
-    const { uid } = await createUserEmailPassword(userData)
-    setIsVisibleIndicator(false)
-    saveDatasUserInDB(uid)
-		// setUsername(uid, userData)
+	    setIsVisibleIndicator(true)
+	    setAcceptTerms(false)
+	    
+	    const { uid } = await createUserEmailPassword(userData)
+	    setIsVisibleIndicator(false)
+	    saveDatasUserInDB(uid)
+			// setUsername(uid, userData)
 	}
 
 	function RenderItem({item}) {
@@ -219,7 +219,7 @@ function TermConditions({navigation}) {
 					mode="contained"
 					disabled={acceptTerms === "unchecked"? true : false}
 					onPress={submitForm}
-          rippleColor={theme.colors.secondary}
+        			rippleColor={theme.colors.secondary}
 				>
 					Accepter
 				</Button>

@@ -21,7 +21,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.jpg",
         "backgroundColor": "#703890"
-      }
+      },
+      "package": "com.sendervision.MoonCorrection"
     },
     "web": {
       "favicon": "./assets/favicon.png"
