@@ -24,9 +24,9 @@ function Starter ({navigation}){
 				<Text 
 					style={{
 						textAlign: 'center', 
-						fontFamily: "Poppins-SemiBold",
-            fontSize: 40,
-						color: theme.colors.secondary,
+						fontFamily: "Poppins-Black",
+            			fontSize: 40,
+						color: theme.colors.primary,
 						marginTop: 30,
 					}}
 				>
@@ -42,43 +42,41 @@ function Starter ({navigation}){
 						title="Se connecter"
 						mode="contained"
 						bold
-            color={theme.colors.secondaryContainer}
+            			color={theme.colors.secondary}
 						style={{
 							marginTop: 30,
 							marginHorizontal: 30,
 							height: 60,
 							justifyContent: "center",
 							fontFamily: "Roboto-Regular",
-              backgroundColor: theme.colors.secondary
+              				backgroundColor: theme.colors.secondaryContainer
 						}}
-						fontSize={20}
+						fontSize={25}
 						onPress={() => {
-              navigation.navigate("login")
-            }}
-						rippleColor={theme.colors.secondary}
+			              navigation.navigate("login")
+			            }}
+						rippleColor={theme.colors.secondaryContainer}
 					/>
 					<ButtonForm
 						title="Crée mon compte"
 						mode="contained"
 						bold
-            color={theme.colors.secondary}
+            			color={theme.colors.primaryContainer}
 						style={{
 							marginTop: 30,
 							marginHorizontal: 30,
 							height: 60,
 							justifyContent: "center",
-              backgroundColor: theme.colors.secondaryContainer
+            				backgroundColor: theme.colors.primary
 						}}
-						fontSize={20}
+						fontSize={25}
 						loading={loadingButton}
 						onPress={() => {
 							setLoadingButton(true)
-							setTimeout(function() {
-								setLoadingButton(false)
-								navigation.navigate("signin")
-							}, 400);
+							navigation.navigate("signin")
+							setLoadingButton(false)
 						}}
-						rippleColor={theme.colors.secondaryContainer}
+						rippleColor={theme.colors.primary}
 					/>
 				</View>
 

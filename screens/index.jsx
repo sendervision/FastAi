@@ -150,7 +150,8 @@ export default function Moon() {
               }}
             >
               {
-                !isAuth? (
+                // !isAuth?
+                true? (
                   <Stack.Screen
                     name="navauth"
                     component={NavAuth}

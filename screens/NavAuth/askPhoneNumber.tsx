@@ -13,7 +13,6 @@ import { AntDesign } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
 
 import { BackIcon } from "../../components/backIcon"
-import { Logo } from '../../components/Logo'
 import FormInput from '../../components/formInput'
 import { TranslateX } from '../../components/animateInput'
 import ModalConfirmationPhoneNumber from '../../components/modalConfirmationNumber'
@@ -103,12 +102,12 @@ export default function AskPhoneNumber({navigation}){
           >
             Numéro de téléphone
           </Text>
-          <Logo />
           <Text 
             variant="titleSmall" 
             style={{
               textAlign: "center",
-              marginBottom: 10,
+              marginBottom: 30,
+              marginTop: 20,
               marginHorizontal: 10,
               fontSize: 14,
               fontFamily: 'Poppins-SemiBold',

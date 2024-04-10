@@ -67,7 +67,7 @@ export default function NavBottom() {
                   return <Text
                     style={{
                       color: props.focused? theme.colors.secondary : theme.colors.outline,
-                      fontSize: props.focused? 12 : 10,
+                      fontSize: props.focused? 11 : 10,
                       fontFamily: "Poppins-SemiBold",
                       textAlign: 'center',
                       textAlignVertical: "center",
@@ -82,7 +82,7 @@ export default function NavBottom() {
                   <item.type 
                     name={ props.focused? item.activeIcon : item.inActiveIcon} 
                     color={props.focused? theme.colors.secondary : theme.colors.outline} 
-                    size={ props.focused? 30 : props.size} 
+                    size={ props.focused? 28 : 20} 
                     style={{
                       marginTop: 10,
                       height: 30,
