@@ -15,14 +15,28 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Allow $(PRODUCT_NAME) to use Face ID.",
+        "NSPhotoLibraryUsageDescription": "Allow ${PRODUCT_NAME} to access your photos",
+        "NSPhotoLibraryAddUsageDescription": "Allow ${PRODUCT_NAME} to save photos"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.jpg",
         "backgroundColor": "#703890"
       },
-      "package": "com.sendervision.MoonCorrection"
+      "package": "com.sendervision.MoonCorrection",
+      "permissions": [
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_MEDIA_LOCATION"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -73,22 +87,16 @@
         }
       ]
     ],
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "extra": {
       "router": {
         "origin": false
       },
       "eas": {
-        "projectId": "0143d460-a342-4299-90a6-0e85ec85129d"
+        "projectId": "c2ee0849-7caa-4ee1-8cb6-247162ced036"
       }
-    },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/0143d460-a342-4299-90a6-0e85ec85129d",
-      "enabled": true,
-      "fallbackToCacheTimeout": 0,
-      "checkAutomatically": "ON_LOAD"
     }
   }
 }

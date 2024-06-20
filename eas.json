@@ -1,34 +1,16 @@
 {
   "cli": {
-    "version": ">= 7.6.2"
+    "version": ">= 9.2.0"
   },
   "build": {
     "development": {
-      "developmentClient": false,
-      "distribution": "internal",
-      "channel": "development"
-    },
-    "preview": {
-      "distribution": "internal",
-      "channel": "preview",
-      "android": {
-        "buildType": "apk"
-      }
-    },
-    "preview2": {
-      "android": {
-        "gradleCommand": ":app:assembleRelease"
-      }
-    },
-    "preview3": {
       "developmentClient": true,
-    },
-    "preview4": {
       "distribution": "internal"
     },
-    "production": {
-      "channel": "production"
-    }
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {}
   },
   "submit": {
     "production": {}

@@ -1,32 +1,38 @@
 import "react-native-gesture-handler"
-import React from 'react'
-import * as Updates from "expo-updates"
-import { LogBox } from 'react-native';
-import Moon from "./screens";
+import React, { useCallback } from 'react';
+import { useFonts} from "expo-font"
+import * as SplashScreen from "expo-splash-screen"
+import { View, Text, StyleSheet } from 'react-native';
+import DBME from "./src"
 
-LogBox.ignoreLogs([
-  "Require cycle: screens\index.jsx -> screens\NavStack\chat.jsx -> components\renderBubble.jsx -> screens\index.jsx",
-
-])
-
-async function onFetchUpdateAsync() {
-  try{
-    const update = await Updates.checkForUpdateAsync()
-    if (update.isAvailable){
-      await Updates.fetchUpdateAsync()
-      await Updates.reloadAsync()
-    }
-  }catch(error){
-
-  }
-}
+SplashScreen.preventAutoHideAsync()
 
 export default function App() {
-  React.useEffect(() => {
-    if(!__DEV__){
-      onFetchUpdateAsync()
+  const [fontsLoaded, fontError] = useFonts({
+    Inter: require('@/fonts/Inter.ttf'),
+    InterBold: require('@/fonts/InterBold.ttf'),
+    Medium: require("@/fonts/medium.ttf"),
+    Italic: require("@/fonts/italic.ttf")
+  })
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded || fontError) {
+      await SplashScreen.hideAsync();
     }
-  }, [])
-  return <Moon />
+  }, [fontsLoaded, fontError]);
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
+
+  return <DBME onLayoutRootView={onLayoutRootView} />
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  }
+})
 
