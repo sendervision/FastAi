@@ -32,8 +32,8 @@ const getUserData = async () => {
 export const useUser = create(async (state) => {
   // const dataUser = await getUserData()
   return {
-    firstname: "", // dataUser.firstname,
-    lastname: "", // dataUser.lastname,
+    firstname: "John", // dataUser.firstname,
+    lastname: "Doe", // dataUser.lastname,
     phonenumber: "", // dataUser.phonenumber,
     profile: "", // dataUser.profile,
     updateUseUser(user){

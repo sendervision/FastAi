@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { 
   View, 
   StyleSheet, 
-  Dimensions
+  Dimensions,
+  Pressable
 } from 'react-native'
 import { useTheme, Avatar, Text, Icon } from 'react-native-paper'
 import { IconProfil } from '../../components/avatar'
-import { ButtonAccount } from '../../components/auth/buttonAccount'
+import { showToast } from '@/utils/toast'
 
 const { width,height } = Dimensions.get('window')
 
@@ -14,20 +15,21 @@ export function ProfileScreen({navigation}) {
   const theme = useTheme()
 
   const user = {
-    name: "John Doe",
-    phonenumber: "243975044814",
+    name: "XXXXXXXX",
+    phonenumber: "xxxxxxxxx",
   }
 
   const ComponentProfile = ({icon, label, speciality = false}) => {
-
+    const message = "A venir"
     return(
-      <View
+      <Pressable
         style={[
           styles.containerInfo,
           {
             backgroundColor: speciality? theme.colors.onSurface : theme.colors.secondary
           }
         ]}
+        onPress={() => showToast(message)}
       >
         <View style={{flexDirection: "row"}} >
           <Avatar.Icon 
@@ -53,7 +55,7 @@ export function ProfileScreen({navigation}) {
           size={30}
           color={speciality? "rgba(30,41,59, 1)" : null}
         />
-      </View>
+      </Pressable>
     )
   }
 
