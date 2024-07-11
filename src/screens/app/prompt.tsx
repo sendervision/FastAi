@@ -5,7 +5,6 @@ import {
   Card,
   Button,
   Icon,
-  ActivityIndicator,
 } from "react-native-paper";
 import { Chase } from "react-native-animated-spinkit";
 import { CopyText } from "@/utils/clipboard";
@@ -65,15 +64,6 @@ export const PromptScreen = memo(() => {
                 },
               ]}
             >
-              {/* <Card.Title 
-              titleStyle={[
-                styles.cardTitle,
-                {
-                  color: theme.colors.primaryContainer
-                }
-              ]}
-              title={item.title} 
-            /> */}
               <CoverCard item={item} />
               <Card.Content>
                 <Text

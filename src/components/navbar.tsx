@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Button, View } from "react-native";
+import { View } from "react-native";
 import {
   Appbar,
   Avatar,
@@ -14,31 +14,41 @@ import { ModalModel } from "./chat/modalModel";
 import { Bot } from "@/interface";
 import { useVisibleBannerBot } from "@/context/hook";
 
-export function NavBar({ bot }: {bot: Bot}) {
+export function NavBar({ bot }: { bot: Bot }) {
   const theme = useTheme();
   const navigation = useNavigation();
   const [visible, setVisible] = React.useState(false);
-  const [visibleModalModel, setVisibleModalModel] = React.useState(false)
-  const { setIsVisible: setVisibleBannerInfoBot } = useVisibleBannerBot()
+  const [visibleModalModel, setVisibleModalModel] = React.useState(false);
+  const { setIsVisible: setVisibleBannerInfoBot } = useVisibleBannerBot();
 
   const openMenu = () => setVisible(true);
 
   const closeMenu = () => setVisible(false);
-  
+
   const onPressModelMenu = () => {
-    setVisible(false)
-    setVisibleModalModel(true)
-  }
+    setVisible(false);
+    setVisibleModalModel(true);
+  };
 
   const onVisibleBannerInfoBot = () => {
-    setVisible(false)
-    setVisibleBannerInfoBot(true)
-  }
+    setVisible(false);
+    setVisibleBannerInfoBot(true);
+  };
 
   const optionsMenu = [
-    {title: "Model", icon: "pickaxe", onPress: onPressModelMenu, conditionRender: bot.models.length > 0},
-    {title: "Info", icon: "information", onPress: onVisibleBannerInfoBot, conditionRender: true},
-  ]
+    {
+      title: "Model",
+      icon: "pickaxe",
+      onPress: onPressModelMenu,
+      conditionRender: bot.models.length > 0,
+    },
+    {
+      title: "Info",
+      icon: "information",
+      onPress: onVisibleBannerInfoBot,
+      conditionRender: true,
+    },
+  ];
 
   return (
     <Appbar.Header
@@ -108,19 +118,28 @@ export function NavBar({ bot }: {bot: Bot}) {
               />
             }
           >
-            {
-              optionsMenu.map((option, index) => (
-                option.conditionRender &&
-                <Menu.Item 
-                  key={index}
-                  onPress={option.onPress} 
-                  title={option.title}
-                  titleStyle={{color: theme.colors.primaryContainer, fontFamily: "Inter", fontSize: 14}}
-                  trailingIcon={() => <Icon source={option.icon} size={25} color={theme.colors.primaryContainer} />}
-                />
-
-              ))
-            }
+            {optionsMenu.map(
+              (option, index) =>
+                option.conditionRender && (
+                  <Menu.Item
+                    key={index}
+                    onPress={option.onPress}
+                    title={option.title}
+                    titleStyle={{
+                      color: theme.colors.primaryContainer,
+                      fontFamily: "Inter",
+                      fontSize: 14,
+                    }}
+                    trailingIcon={() => (
+                      <Icon
+                        source={option.icon}
+                        size={25}
+                        color={theme.colors.primaryContainer}
+                      />
+                    )}
+                  />
+                )
+            )}
           </Menu>
         </View>
       </View>

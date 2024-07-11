@@ -1,30 +1,28 @@
 import { MaterialIcons } from '@expo/vector-icons'
 import React, { useCallback, useEffect, useReducer, useState } from 'react'
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import {
   GiftedChat,
   IMessage,
   Send,
   SendProps,
-  SystemMessage,
 } from 'react-native-gifted-chat'
 import { useSQLiteContext } from 'expo-sqlite/next'
 import * as Crypto from "expo-crypto"
 import { NavBar } from '@/components/navbar'
 import AccessoryBar from "@/components/accessoryBar"
 import CustomActions from "@/components/customActions"
-import CustomView from "@/components/customView"
 import { renderDay } from '@/components/chat/renderDay'
 import { RenderBubble } from '@/components/chat/renderBubble'
-import { IconButton, useTheme } from 'react-native-paper'
+import { useTheme } from 'react-native-paper'
 import { RenderSystemMessage } from '@/components/chat/renderSystemMessage'
 import { RenderInputToolbar } from '@/components/chat/renderInputTollbar'
 import { IcoScrollToBottom } from '@/components/iconScrollToBottom'
-import { Bot, Message, Message as MessageDB } from '@/interface';
+import { Bot, Message as MessageDB } from '@/interface';
 import { createTableMessage, deleteOneMessage, getAllMessage, saveMessage } from '@/utils/database'
 import { showToast } from '@/utils/toast'
 import { imageBase64ToImage } from '@/utils/image'
-import { useInputMessage, useModel, useUser } from '@/context/hook'
+import { useInputMessage, useUser } from '@/context/hook'
 import { BannerInfoBot } from '@/components/chat/bannerInfoBot'
 import { RenderChatFooter } from '@/components/chat/renderChatFooter'
 
@@ -243,10 +241,6 @@ export function ChatScreen({navigation, route}){
     [onSendFromUser],
   )
 
-  const renderCustomView = useCallback(props => {
-    return <CustomView {...props} />
-  }, [])
-
   const renderSend = useCallback((props: SendProps<IMessage>) => {
     return (
       <Send {...props} containerStyle={{ justifyContent: 'center' }}>
@@ -282,7 +276,6 @@ export function ChatScreen({navigation, route}){
           renderDay={renderDay}
           renderBubble={(props) => <RenderBubble props={props} />}
           renderAccessory={renderAccessory}
-          renderActions={renderCustomActions}
           renderSystemMessage={(props) => {
             const newProps = {
               props: props,
@@ -291,7 +284,7 @@ export function ChatScreen({navigation, route}){
             };
             return <RenderSystemMessage newProps={newProps} />;
           }}
-          renderCustomView={renderCustomView}
+          renderActions={renderCustomActions}
           renderSend={renderSend}
           renderChatFooter={() => <RenderChatFooter  bot={bot} />}
           isCustomViewBottom

@@ -1,7 +1,6 @@
 import { FlatList } from "react-native-gesture-handler";
 import {
   View,
-  ImageBackground,
   StyleSheet,
   Pressable,
   Dimensions,

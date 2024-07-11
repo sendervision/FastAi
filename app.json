@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "MoonCorrection",
-    "slug": "MoonCorrection",
-    "version": "1.0.0",
+    "name": "FastAi",
+    "slug": "FastAi",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.jpg",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#703890"
+      "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -24,8 +24,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.jpg",
-        "backgroundColor": "#703890"
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#020817"
       },
       "package": "com.sendervision.MoonCorrection",
       "permissions": [
@@ -95,8 +95,11 @@
         "origin": false
       },
       "eas": {
-        "projectId": "c2ee0849-7caa-4ee1-8cb6-247162ced036"
+        "projectId": "488e51ec-1ea6-4cb3-9ccd-6c7c40bc834c"
       }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/488e51ec-1ea6-4cb3-9ccd-6c7c40bc834c"
     }
   }
 }

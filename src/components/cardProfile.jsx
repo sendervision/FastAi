@@ -6,7 +6,7 @@ const { width, height } = Dimensions.get('window')
 
 export function CardProfile(){
   const theme = useTheme()
-  const { firstname, lastname, password, phonenumber } = useUserData()
+  const { firstname, lastname, phonenumber } = useUserData()
 
   const data = [["Nom", firstname], ["Prénom", lastname], ["Mot de passe", "*******"], ["Numéro de téléphone", phonenumber]]
 

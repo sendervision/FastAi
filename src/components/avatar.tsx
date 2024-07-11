@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Pressable } from 'react-native'
+import { Pressable } from 'react-native'
 import {
   useTheme,
   Avatar

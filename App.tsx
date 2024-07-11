@@ -2,7 +2,6 @@ import "react-native-gesture-handler"
 import React, { useCallback } from 'react';
 import { useFonts} from "expo-font"
 import * as SplashScreen from "expo-splash-screen"
-import { View, Text, StyleSheet } from 'react-native';
 import DBME from "./src"
 
 SplashScreen.preventAutoHideAsync()
@@ -27,12 +26,4 @@ export default function App() {
 
   return <DBME onLayoutRootView={onLayoutRootView} />
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  }
-})
 

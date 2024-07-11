@@ -1,4 +1,4 @@
-import { Message, User } from "@/interface";
+import { Message } from "@/interface";
 import { type SQLiteDatabase } from "expo-sqlite/next";
 
 export async function createTableMessage(db: SQLiteDatabase, tablename) {

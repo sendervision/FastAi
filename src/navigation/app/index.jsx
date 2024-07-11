@@ -1,8 +1,8 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { createStackNavigator } from "@react-navigation/stack"
 import { BottomNavigator } from "@/navigation/app/bottomNav"
 import { ChatScreen } from "@/screens/app/chat"
 
-const Stack = createNativeStackNavigator()
+const Stack = createStackNavigator()
 
 export default function AppNavigator(){
   const listScreens = [
@@ -19,9 +19,9 @@ export default function AppNavigator(){
       initialRouteName="bottomnav"
     >
       {
-        listScreens.map(screen => (
+        listScreens.map((screen, index) => (
           <Stack.Screen 
-            key={screen.key} 
+            key={index} 
             name={screen.name} 
             component={screen.component} 
           />

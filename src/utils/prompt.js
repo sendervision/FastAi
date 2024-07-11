@@ -1,9 +1,9 @@
 export const typePrompt = [
-  "Crypto", 
-  "Business", 
-  "Programmation", 
-  "Apprentissage", 
-  "Image", 
+  "Crypto",
+  "Business",
+  "Programmation",
+  "Apprentissage",
+  "Image",
   "Proverbe",
   "Ecrivain",
   "Marketing",
@@ -12,7 +12,7 @@ export const typePrompt = [
   "Scientifique",
   "Réseaux Sociaux",
   "Ai Art",
-]
+];
 
 export const prompts = {
   Crypto: [
@@ -23,17 +23,17 @@ export const prompts = {
   Business: [
     "Quel genre de business puis-je lancer en tant qu'étudiant?",
     "Quel sont les business les plus rentables?",
-    "Quel business lancer quand je n'ai pas de capital?"
+    "Quel business lancer quand je n'ai pas de capital?",
   ],
   Programmation: [
     "C'est quoi la programmation?",
     "Est-il possible de commancer la programmation à mon âge?",
-    "Quel sont les platfomes que je peux utilisé pour apprendre la programmation?"
+    "Quel sont les platfomes que je peux utilisé pour apprendre la programmation?",
   ],
   Apprentissage: [
     "Quel sont les métiers que je peux apprendre en tant qu'etudiant?",
     "Est-ce que tu peux m'apprendre l'anglais?",
-    "Comment faire pour apprendre plus vite?"
+    "Comment faire pour apprendre plus vite?",
   ],
   Image: [
     "A cat in space",
@@ -43,7 +43,7 @@ export const prompts = {
   Proverbe: [
     "Donne moi un proverbe aléatoire mais populaire",
     "Quel proverbe parle d'un SDF qui demande de l'aide à un homme riche",
-    "Crée un proverbe de ton choix"
+    "Crée un proverbe de ton choix",
   ],
   Ecrivain: [
     "Écrivez une courte histoire sur un détective qui voyage dans le temps",
@@ -51,13 +51,13 @@ export const prompts = {
     "Développez une esquisse de personnage pour un héros doté d'un super pouvoir inhabituel",
     "Rédigez un article de fond sur l’impact des médias sociaux sur la créativité",
     "Créez une histoire pour un méchant qui incite le public à sympathiser avec lui",
-    "Rédigez une critique d’un livre de fiction qui n’a pas encore été écrit"
+    "Rédigez une critique d’un livre de fiction qui n’a pas encore été écrit",
   ],
   Marketing: [
     "Rédigez une description de produit attrayante pour une bouteille d’eau écologique",
     "Concevez une campagne sur les réseaux sociaux pour une agence de voyage en réalité virtuelle",
     "Créez une ligne d'objet d'e-mail convaincante pour une vente de vacances",
-    "Générez une liste de mots-clés SEO pour une agence de marketing numérique"
+    "Générez une liste de mots-clés SEO pour une agence de marketing numérique",
   ],
   "Artiste&Designer": [
     "Générez une idée de fresque murale qui célèbre la diversité communautaire.",
@@ -73,7 +73,7 @@ export const prompts = {
     "Créez un exercice de pleine conscience axé sur la conscience de la respiration.",
     "Décrire une stratégie pour améliorer les compétences en gestion du temps.",
     "Créez un défi de déconnexion des appareils numériques pendant 24 heures.",
-    "Générez des invites pour un projet de rédaction de lettres à votre futur moi"
+    "Générez des invites pour un projet de rédaction de lettres à votre futur moi",
   ],
   Scientifique: [
     "Expliquez le processus de la photosynthèse en termes simples.",
@@ -81,7 +81,7 @@ export const prompts = {
     "Développez un didacticiel sur la création d’une application mobile simple",
     "Expliquez l'importance des découvertes du télescope spatial James Webb",
     "Rédigez un guide d'introduction au piratage éthique pour les passionnés de cybersécurité.",
-    "Rédiger un rapport sur l’avenir des technologies de transport."
+    "Rédiger un rapport sur l’avenir des technologies de transport.",
   ],
   "Réseaux Sociaux": [
     "Créez un tweet engageant sur l’importance du vote.",
@@ -98,6 +98,6 @@ export const prompts = {
     "A portrait of an ancient civilization thriving on Mars.",
     "A whimsical forest filled with bioluminescent plants and animals.",
     "The bustling streets of a futuristic city designed with sustainability in mind.",
-    "A dynamic scene capturing the energy of a music festival."
-  ]
-}
+    "A dynamic scene capturing the energy of a music festival.",
+  ],
+};

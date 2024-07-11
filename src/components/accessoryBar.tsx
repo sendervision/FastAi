@@ -2,16 +2,11 @@ import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
-import {
-  getLocationAsync,
-  pickImageAsync,
-  takePictureAsync,
-} from "@/utils/mediaUtils";
+import { showToast } from "@/utils/toast";
 import { useTheme } from "react-native-paper";
 
 export default function AccessoryBar(props) {
   const theme = useTheme();
-  const { onSend, isTyping } = props;
 
   return (
     <View 
@@ -24,18 +19,18 @@ export default function AccessoryBar(props) {
     >
       <Button
         color={theme.colors.tertiary}
-        onPress={() => pickImageAsync(onSend)}
+        onPress={() => showToast("A venir")}
         name="photo"
       />
       <Button
         color={theme.colors.tertiary}
-        onPress={() => takePictureAsync(onSend)}
+        onPress={() => showToast("A venir")}
         name="camera"
       />
       <Button
         color={theme.colors.tertiary}
         onPress={() => {
-          isTyping();
+          showToast("A venir");
         }}
         name="chat"
       />

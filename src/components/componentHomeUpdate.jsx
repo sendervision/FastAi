@@ -1,6 +1,6 @@
 import React from "react"
 import { View, StyleSheet, Dimensions } from "react-native"
-import { Text, useTheme, SegmentedButtons } from "react-native-paper"
+import { Text, useTheme } from "react-native-paper"
 import { ButtonsSwitch } from "./buttonsSwitch"
 
 const { width, height } = Dimensions.get("window")
@@ -37,7 +37,7 @@ export function ComponentHomeUpdate(){
         <Text style={[styles.subtitle, {color: theme.colors.secondary}]}>Les nouvelles fonctionalité</Text>
         <Text style={[styles.subtitle, {color: theme.colors.secondary}]}>Les avancés technologique</Text>
       </View>
-      <ButtonsSwitch values={values} value={value} />
+      <ButtonsSwitch values={values} value={value} setValue={setValue} />
     </View>
   )
 }

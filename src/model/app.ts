@@ -10,7 +10,7 @@ const gpt = new GPT();
 export const NEGATIVE_PROMPT =
   "blury, bad quality, bad anatomy, fused fingers, malformed limbs, extra hands";
 
-const MODEL = useModel.getState().model
+const MODEL = useModel.getState().model;
 /**
  *
  * @param {string} prompt
@@ -50,7 +50,7 @@ export async function Chat(prompt) {
   }
 }
 
-export async function AbsoluteBeauty(prompt: string): Promise<string[] | any > {
+export async function AbsoluteBeauty(prompt: string): Promise<string[] | any> {
   try {
     const response = await rsnchat.absolutebeauty(prompt, NEGATIVE_PROMPT);
     if (response.success) return [await response.image];
@@ -63,12 +63,11 @@ export async function AbsoluteBeauty(prompt: string): Promise<string[] | any > {
 export async function dalleV2(prompt: string): Promise<string | any> {
   try {
     const response = await rsnchat.dalle(prompt);
-    if (response.success){
+    if (response.success) {
       return [await response.image.base64];
-    }
-    else throw new Error("success false");
+    } else throw new Error("success false");
   } catch (error) {
-    console.log("v2", error.message)
+    console.log("v2", error.message);
     return ErrorResponse();
   }
 }
@@ -83,7 +82,10 @@ export async function AiIcon(prompt: string): Promise<string | any> {
   }
 }
 
-export async function HercChat(prompt: string, model: string = "v3"): Promise<string | any> {
+export async function HercChat(
+  prompt: string,
+  model: string = "v3"
+): Promise<string | any> {
   try {
     const chat = new Hercai();
     const resp = await chat.question({
@@ -97,9 +99,17 @@ export async function HercChat(prompt: string, model: string = "v3"): Promise<st
   }
 }
 
-export async function _gpt(prompt: string, messages=[], mdl="gpt-4"): Promise<string | any> {
+export async function _gpt(
+  prompt: string,
+  messages = [],
+  mdl = "gpt-4"
+): Promise<string | any> {
   try {
-    const response = await gpt.gpt({ prompt: prompt, messages: messages, model: MODEL? MODEL : mdl });
+    const response = await gpt.gpt({
+      prompt: prompt,
+      messages: messages,
+      model: MODEL ? MODEL : mdl,
+    });
     if (response.code === 200) return response.gpt;
     else throw new Error();
   } catch (error) {
@@ -148,9 +158,12 @@ export async function dalleV1(prompt: string) {
  */
 export async function _prodia(prompt: string) {
   try {
-    const response = await gpt.prodia({ prompt, negative_prompt: NEGATIVE_PROMPT });
-    let images = await response.images
-    images = images.map(image => image.split(",")[1])
+    const response = await gpt.prodia({
+      prompt,
+      negative_prompt: NEGATIVE_PROMPT,
+    });
+    let images = await response.images;
+    images = images.map((image) => image.split(",")[1]);
 
     return images;
   } catch (error) {
@@ -166,11 +179,11 @@ export async function _prodia(prompt: string) {
  */
 export async function stablediffusion(prompt: string) {
   try {
-    const response = await gpt.stablediffusion({prompt: prompt});
-    console.log("response: ", response)
+    const response = await gpt.stablediffusion({ prompt: prompt });
+    console.log("response: ", response);
     // return response.images;
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     return ErrorResponse();
   }
 }
@@ -182,7 +195,10 @@ export async function stablediffusion(prompt: string) {
  */
 export async function stablediffusionV2(prompt: string) {
   try {
-    const response = await gpt.stablediffusionV2({ prompt, prompt_negative: NEGATIVE_PROMPT });
+    const response = await gpt.stablediffusionV2({
+      prompt,
+      prompt_negative: NEGATIVE_PROMPT,
+    });
     return response.images;
   } catch (error) {
     return ErrorResponse();
@@ -191,10 +207,9 @@ export async function stablediffusionV2(prompt: string) {
 
 export async function barman(prompt: string): Promise<string[] | any> {
   try {
-    const response = await gpt.barman({prompt})
-    return [await response.text()]
+    const response = await gpt.barman({ prompt });
+    return [await response.text()];
   } catch (error) {
-   return ErrorResponse() 
+    return ErrorResponse();
   }
 }
-

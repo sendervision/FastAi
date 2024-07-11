@@ -1,7 +1,7 @@
 import { View, StyleSheet } from "react-native";
 import { Button, Icon, useTheme } from "react-native-paper";
 
-export function ButtonsSwitch({values, value}){
+export function ButtonsSwitch({values, value, setValue}){
   const theme = useTheme()
   const checkedColor = theme.colors.secondary
   const textCheckedColor = theme.colors.tertiary
@@ -20,10 +20,11 @@ export function ButtonsSwitch({values, value}){
                 borderWidth: 2,
               }
             ]}
-            icon={data.value === value? () => <Icon size={20} color={textCheckedColor} source={"upload"}/> : null}
+            icon={data.value === "updated"? () => <Icon size={20} color={textCheckedColor} source={"upload"}/> : null}
             buttonColor={data.value === value? checkedColor : null}
             textColor={data.value === value? textCheckedColor : theme.colors.secondary}
             labelStyle={styles.labelStyle}
+            onPress={() => setValue(data.value)}
           >
             {data?.label}
           </Button>

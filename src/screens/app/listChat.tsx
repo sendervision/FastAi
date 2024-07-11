@@ -19,7 +19,7 @@ export function ListChatScreen({navigation}){
     data.push({title: type_model, data: listAi.filter(ai => ai.model === type_model)})
   }
 
-  const onNavigateToChatScreen = (item) => {
+  const onNavigateToChatScreen = (item: { models: any[] }) => {
     updateModel({model: item.models[0]})
     useNavigationParent.navigate("chat", {item: item})
   }

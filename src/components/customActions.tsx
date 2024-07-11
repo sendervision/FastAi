@@ -1,52 +1,36 @@
-import React, { useCallback } from 'react'
-import {
-  StyleProp,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from 'react-native'
+import React from "react";
+import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 
-import { IconButton, useTheme } from 'react-native-paper'
-import { useInputMessage } from '@/context/hook'
+import { IconButton, useTheme } from "react-native-paper";
+import { useInputMessage } from "@/context/hook";
 
 interface Props {
-  containerStyle?: StyleProp<ViewStyle>
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
-const CustomActions = ({
-  containerStyle,
-}: Props) => {
-  const theme = useTheme()
-  const setInputMessage = useInputMessage(state => state.setInputMessage)
+const CustomActions = ({ containerStyle }: Props) => {
+  const theme = useTheme();
+  const setInputMessage = useInputMessage((state) => state.setInputMessage);
 
-  
-  const renderIconComponent = useCallback(() => {
-    return (
-      <IconButton 
-        icon={"close"} 
+  return (
+    <View style={[styles.container, containerStyle]}>
+      <IconButton
+        icon={"close"}
         iconColor={theme.colors.tertiary}
         size={15}
         onPress={() => setInputMessage("")}
         style={{
           borderColor: theme.colors.tertiary,
-          borderWidth:2,
+          borderWidth: 2,
           borderRadius: 20,
           alignSelf: "center",
         }}
       />
-    )
-  }, [])
-
-  return (
-    <View
-      style={[styles.container, containerStyle]}
-    >
-      <>{renderIconComponent()}</>
     </View>
-  )
-}
+  );
+};
 
-export default CustomActions
+export default CustomActions;
 
 const styles = StyleSheet.create({
   container: {
@@ -54,7 +38,6 @@ const styles = StyleSheet.create({
     height: 26,
     marginLeft: 10,
     marginBottom: 10,
-    justifyContent: "center"
+    justifyContent: "center",
   },
-  
-})
+});

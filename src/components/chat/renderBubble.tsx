@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import { useTheme } from 'react-native-paper'
 import { Bubble } from 'react-native-gifted-chat'
 
