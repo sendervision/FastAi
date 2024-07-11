@@ -1,16 +1,49 @@
+import { useEffect, useCallback, useState } from "react";
+import { Dimensions, FlatList, Pressable, StyleSheet, View, Keyboard } from "react-native";
+import { Text, useTheme } from "react-native-paper"
+import * as Animatable from 'react-native-animatable'
 import { useInputMessage } from "@/context/hook";
 import { Bot } from "@/interface";
 import { prompts as PROMPT, typePrompt } from "@/utils/prompt";
 import { DataPromptImage } from "@/utils/prompts_image";
-import { useCallback } from "react";
-import { Dimensions, FlatList, Pressable, StyleSheet, View } from "react-native";
-import { Text, useTheme } from "react-native-paper"
+
 
 const { width, height } = Dimensions.get("window")
 
 export function RenderChatFooter({bot}: {bot: Bot}) {
   const theme = useTheme()
   const setInputMessage = useInputMessage(state => state.setInputMessage)
+  const [typeAnimation, setTypeAnimation] = useState("slideInUp")
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        const timeDown = setTimeout(() => {
+          setTypeAnimation("slideOutDown")
+        }, 1000)
+        return () => {
+          clearTimeout(timeDown)
+        }
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        const timeUp = setTimeout(() => {
+          setTypeAnimation("slideInUp")
+        }, 500)
+        return () => {
+          clearTimeout(timeUp)
+        }
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  })
   
   const getPrompts = useCallback(() => {
     const prompts: string[] = [];
@@ -29,13 +62,15 @@ export function RenderChatFooter({bot}: {bot: Bot}) {
   }, [])
   
 
-  const autoFillInput = (text) => {
+  const autoFillInput = (text: string) => {
+    text = text.replace("“", "")
     setInputMessage(text)
   }
 
   return (
-    <View
-      style={{height: height / 8}}
+    <Animatable.View
+      style={{height: height / 9}}
+      animation={typeAnimation}
     >
       <FlatList
         data={getPrompts()}
@@ -65,7 +100,7 @@ export function RenderChatFooter({bot}: {bot: Bot}) {
           </Pressable>
         )}
       />
-    </View>
+    </Animatable.View>
   );
 }
 

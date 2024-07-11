@@ -17,6 +17,9 @@ export const downloadAndSaveImage = async (imageUrl: string) => {
 
 export const imageBase64ToImage = async (base64: string, uuidImage: string): Promise<string> => {
   let filename = new Date().getTime().toString() + uuidImage + ".png"
+  if (base64.startsWith("data:image/")){
+    base64 = base64.split("base64,")[1]
+  }
   filename = FileSystem.documentDirectory + filename
   await FileSystem.writeAsStringAsync(filename, base64, {
     encoding: FileSystem.EncodingType.Base64

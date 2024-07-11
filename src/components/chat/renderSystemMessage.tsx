@@ -1,16 +1,12 @@
-import { useState, useEffect } from "react";
 import {
   TouchableOpacity,
   Dimensions,
   StyleSheet,
-  ToastAndroid,
-  Platform,
   View,
   Image,
 } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
-import * as Sharing from "expo-sharing";
 import dayjs from "dayjs";
 import { IconSystemMessageType } from "@/interface";
 import { TextMessage } from "./textMessage";
@@ -22,8 +18,6 @@ const { width } = Dimensions.get("window");
 function IconSystemMessage({
   onPress,
   icon,
-  name,
-  color,
 }: IconSystemMessageType) {
   const theme = useTheme();
   return (

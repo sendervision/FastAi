@@ -25,6 +25,7 @@ import { imageBase64ToImage } from '@/utils/image'
 import { useInputMessage, useUser } from '@/context/hook'
 import { BannerInfoBot } from '@/components/chat/bannerInfoBot'
 import { RenderChatFooter } from '@/components/chat/renderChatFooter'
+import { useFuncBot } from '@/utils/utilsNavigation'
 
 const otherUser = {
   _id: 2,
@@ -100,9 +101,11 @@ function getMessageFomat(message): MessageDB{
 export function ChatScreen({navigation, route}){
   const theme = useTheme()
   const bot: Bot = route.params.item
+  // Liste des fonctions qui permet rechercher des réponses
+  const func_request_response = useFuncBot(state => state.func)
   const tablename = bot?.name.toLocaleLowerCase().replace(/[^\w\s]/gi, "").replace(/\s+/g, '')
   const db = useSQLiteContext();
-  const { firstname, lastname} = useUser()
+  const { firstname, lastname} = {firstname: "John", lastname: "Doe"}
   const user = {
     name: `${firstname} ${lastname}`,
     _id: 1
@@ -138,7 +141,7 @@ export function ChatScreen({navigation, route}){
   const requestResponse = useCallback(async (prompt: string): Promise<IMessage[]> => {
     const listMessages = []
     try{
-      const response = await bot.func[0](prompt)
+      const response = await func_request_response[0](prompt)
       if (bot.model === "text"){
         if (!response[0]) throw Error()
         listMessages.push(getFormatMessage(response,""))
@@ -195,11 +198,6 @@ export function ChatScreen({navigation, route}){
     await onSend(msgResponseBot)
 
   }, [])
-
-  const onLoadEarlier = useCallback(() => {
-  
-  }, [])
-
 
   const setIsTyping = useCallback(
     (isTyping: boolean) => {
@@ -266,7 +264,6 @@ export function ChatScreen({navigation, route}){
           dateFormat="ll"
           bottomOffset={5}
           loadEarlier={state.loadEarlier}
-          onLoadEarlier={onLoadEarlier}
           isLoadingEarlier={state.isLoadingEarlier}
           messagesContainerStyle={{ backgroundColor: theme.colors.background }}
           user={user}
@@ -280,7 +277,6 @@ export function ChatScreen({navigation, route}){
             const newProps = {
               props: props,
               deleteMessage,
-          //     // onLongPress: onLongPressMessageText,
             };
             return <RenderSystemMessage newProps={newProps} />;
           }}
@@ -290,9 +286,6 @@ export function ChatScreen({navigation, route}){
           isCustomViewBottom
           scrollToBottomStyle={{backgroundColor: theme.colors.tertiary}}
           keyboardShouldPersistTaps='never'
-          isTyping={state.isTyping}
-          inverted={Platform.OS !== 'web'}
-          infiniteScroll
         />
         {
           // Platform.OS === "android" && <KeyboardAvoidingView behavior='padding' />

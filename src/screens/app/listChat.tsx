@@ -5,6 +5,7 @@ import { listAi } from "@/utils/aiList"
 import { ItemListChat } from "@/components/itemListChat"
 import { useNavigation } from "@react-navigation/native"
 import { useModel } from "@/context/hook"
+import { useFuncBot } from "@/utils/utilsNavigation"
 
 const { width, height } = Dimensions.get("window")
 
@@ -12,6 +13,7 @@ export function ListChatScreen({navigation}){
   const theme = useTheme()
   const useNavigationParent = useNavigation().getParent()
   const updateModel = useModel(state => state.updateModel)
+  const updateFuncBot = useFuncBot(state => state.updateFunc)
 
   const TypeModels = new Set(listAi.map(ai => ai.model))
   const data = []
@@ -19,9 +21,11 @@ export function ListChatScreen({navigation}){
     data.push({title: type_model, data: listAi.filter(ai => ai.model === type_model)})
   }
 
-  const onNavigateToChatScreen = (item: { models: any[] }) => {
+  const onNavigateToChatScreen = (item: { models: any[], func: any[] }) => {
     updateModel({model: item.models[0]})
-    useNavigationParent.navigate("chat", {item: item})
+    updateFuncBot(item.func)
+    const bot = {...item, func: null}
+    useNavigationParent.navigate("chat", {item: bot})
   }
   
   return(
