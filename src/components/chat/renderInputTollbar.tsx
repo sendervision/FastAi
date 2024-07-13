@@ -23,7 +23,7 @@ export const RenderInputToolbar = ({props}) => {
         backgroundColor: theme.colors.background
       }}
       containerStyle={{
-        borderTopWidth: 1,
+        borderTopWidth: 0,
         paddingHorizontal: 8,
         backgroundColor: theme.colors.background,
       }}

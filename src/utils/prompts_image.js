@@ -120,12 +120,6 @@ export const DataPromptImage = [
       "“Generate an impressionist-style watercolor oil painting of a tranquil pond. Use brushstrokes to blend colors, capture the play of light and color, and put in a warm glow of dappled sunlight.”",
   },
   {
-    title: "Seasons",
-    image: "https://clickup.com/blog/wp-content/uploads/2024/01/image-74.png",
-    prompt:
-      "“Capture the beauty of the winter season in a single scene, trying seasonal elements and color palettes to convey the harmony of nature’s cycles.”",
-  },
-  {
     title: "Line diagrams",
     image: "https://clickup.com/blog/wp-content/uploads/2024/01/image-69.png",
     prompt:
@@ -148,13 +142,6 @@ export const DataPromptImage = [
     image: "https://clickup.com/blog/wp-content/uploads/2024/01/image-71.png",
     prompt:
       "“Generate options of emblems for a prestigious college, with symbols such as a shield, an open book, and a pen. Arrange these elements in a good color scheme, creating a sense of knowledge, tradition, and enlightenment.”",
-  },
-  {
-    title: "Use ClickUp to Craft Creative AI Prompts",
-    image:
-      "https://clickup.com/blog/wp-content/uploads/2024/01/AI-Overview-GIF.gif",
-    prompt:
-      "What if we told you that you can work faster with AI using…well, AI?",
   },
   {
     title: "Abstract",

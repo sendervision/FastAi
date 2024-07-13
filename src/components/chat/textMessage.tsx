@@ -36,7 +36,7 @@ export function TextMessage({ children, ...props }) {
       >
         <Text
           style={{
-            color: theme.colors.primaryContainer,
+            color: theme.colors.onSurface,
             marginBottom: 5,
             fontSize: 14,
             fontFamily: "InterBold",
@@ -56,7 +56,7 @@ export function TextMessage({ children, ...props }) {
           name="content-copy"
           size={25}
           onPress={() => toggleCode(restWord)}
-          color={theme.colors.primary}
+          color={theme.colors.onSurface}
           style={{ marginVertical: 5, alignSelf: "flex-end" }}
         />
       </View>

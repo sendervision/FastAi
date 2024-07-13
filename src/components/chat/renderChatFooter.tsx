@@ -1,5 +1,5 @@
-import { useEffect, useCallback, useState } from "react";
-import { Dimensions, FlatList, Pressable, StyleSheet, View, Keyboard } from "react-native";
+import { useEffect, useCallback, useState, memo } from "react";
+import { Dimensions, FlatList, Pressable, StyleSheet, Keyboard } from "react-native";
 import { Text, useTheme } from "react-native-paper"
 import * as Animatable from 'react-native-animatable'
 import { useInputMessage } from "@/context/hook";
@@ -9,6 +9,7 @@ import { DataPromptImage } from "@/utils/prompts_image";
 
 
 const { width, height } = Dimensions.get("window")
+const HEIGHT_CONTAINER = height / 11
 
 export function RenderChatFooter({bot}: {bot: Bot}) {
   const theme = useTheme()
@@ -19,11 +20,11 @@ export function RenderChatFooter({bot}: {bot: Bot}) {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
-        const timeDown = setTimeout(() => {
+        const timeOutDown = setTimeout(() => {
           setTypeAnimation("slideOutDown")
         }, 1000)
         return () => {
-          clearTimeout(timeDown)
+          clearTimeout(timeOutDown)
         }
       }
     );
@@ -69,14 +70,14 @@ export function RenderChatFooter({bot}: {bot: Bot}) {
 
   return (
     <Animatable.View
-      style={{height: height / 9}}
+      style={{height: HEIGHT_CONTAINER}}
       animation={typeAnimation}
     >
       <FlatList
         data={getPrompts()}
         keyExtractor={(item, index) => item + index}
         horizontal
-        contentContainerStyle={{alignItems: "center", paddingBottom: 10}}
+        contentContainerStyle={{marginTop: 5, paddingHorizontal: 5}}
         renderItem={({item, index}) => (
           <Pressable
             key={index}
@@ -84,7 +85,7 @@ export function RenderChatFooter({bot}: {bot: Bot}) {
             style={[
               styles.containerPrompt,
               {
-                backgroundColor: theme.colors.secondary
+                backgroundColor: theme.colors.outlineVariant
               }
             ]}
           >
