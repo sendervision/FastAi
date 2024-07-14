@@ -4,11 +4,19 @@ import * as Clipboard from 'expo-clipboard';
 import * as Sharing from 'expo-sharing';
 import { Alert } from 'react-native';
 
-export const downloadAndSaveImage = async (imageUrl: string) => {
+export const downloadImageAsync = async (imageUrl: string): Promise<FileSystem.FileSystemDownloadResult> => {
   let fileUri = FileSystem.documentDirectory + `${new Date().getTime()}.jpg`;
-
   try {
-    const res = await FileSystem.downloadAsync(imageUrl, fileUri);
+    const res = await FileSystem.downloadAsync(imageUrl, fileUri)
+    return res
+  } catch (error) {
+    console.log(`Downloading image error: ${error}`)
+  }
+}
+
+export const downloadAndSaveImage = async (imageUrl: string) => {
+  try {
+    const res = await downloadImageAsync(imageUrl)
     return saveFile(res.uri);
   } catch (err) {
     console.log('FS Err: ', err);

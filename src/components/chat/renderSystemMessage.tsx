@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   TouchableOpacity,
   Dimensions,
@@ -8,30 +9,25 @@ import {
 import { Text, useTheme } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 import dayjs from "dayjs";
+import * as Animatable from "react-native-animatable";
+import { LightBox } from '@alantoa/lightbox'
 import { IconSystemMessageType } from "@/interface";
 import { TextMessage } from "./textMessage";
 import { CopyText } from "@/utils/clipboard";
 import { saveFile, shareImage } from "@/utils/image";
+import { vibrationAlert } from "@/utils/mediaUtils";
+import { ImageComponent } from "../ImageComponent";
 
 const { width } = Dimensions.get("window");
+const ANIMATION_IN_ICONS_MSG = "fadeIn";
+const ANIMATION_OUT_ICONS_MSG = "fadeOut";
+const TIME_CLOSE_ICON_MSG = 20 // en séconde
 
-function IconSystemMessage({
-  onPress,
-  icon,
-}: IconSystemMessageType) {
+function IconSystemMessage({ onPress, icon }: IconSystemMessageType) {
   const theme = useTheme();
   return (
-    <TouchableOpacity
-      style={[
-        styles.containerIconMessage,
-      ]}
-      onPress={onPress}
-    >
-      <MaterialIcons
-        name={icon}
-        size={25}
-        color={theme.colors.tertiary}
-      />
+    <TouchableOpacity style={[styles.containerIconMessage]} onPress={onPress}>
+      <MaterialIcons name={icon} size={25} color={theme.colors.tertiary} />
     </TouchableOpacity>
   );
 }
@@ -39,13 +35,14 @@ function IconSystemMessage({
 export function RenderSystemMessage({ newProps }) {
   const theme = useTheme();
   const props = newProps.props;
-  const idUser = props.currentMessage.user._id;
-  const myName = props.currentMessage.user.name;
+  const { currentMessage } = props;
+  const idUser = currentMessage.user._id;
+  const myName = currentMessage.user.name;
   const fontSize = 13;
-
+  const [animationIconMsg, setAnimationIconMsg] = useState(ANIMATION_OUT_ICONS_MSG);
 
   const RenderTime = ({ props }) => {
-    const { createdAt } = props.currentMessage;
+    const { createdAt } = currentMessage;
     let hour = dayjs(createdAt).hour().toString();
     let minute = dayjs(createdAt).minute().toString();
     hour = hour.length === 1 ? "0" + hour : hour;
@@ -69,10 +66,32 @@ export function RenderSystemMessage({ newProps }) {
     );
   };
 
+  const onLongPressMsg = () => {
+    if (animationIconMsg === ANIMATION_IN_ICONS_MSG) {
+      return onPressMsg();
+    }
+    vibrationAlert(100);
+    setAnimationIconMsg(ANIMATION_IN_ICONS_MSG);
+    const timeoutIcon = setTimeout(() => {
+      setAnimationIconMsg(ANIMATION_OUT_ICONS_MSG);
+    }, 1000 * TIME_CLOSE_ICON_MSG);
+    return () => clearTimeout(timeoutIcon);
+  };
+
+  const onPressMsg = () => {
+    if (animationIconMsg === ANIMATION_IN_ICONS_MSG) {
+      setAnimationIconMsg(ANIMATION_OUT_ICONS_MSG);
+      vibrationAlert(100);
+    }
+  };
+
   return (
     <>
       <TouchableOpacity
         activeOpacity={1}
+        onLongPress={onLongPressMsg}
+        onPress={onPressMsg}
+        delayPressIn={1000}
         style={[
           styles.containerMessage,
           {
@@ -83,16 +102,12 @@ export function RenderSystemMessage({ newProps }) {
           },
         ]}
       >
-        {props.currentMessage.image ? (
-          <Image
-            source={{ uri: props.currentMessage.image }}
-            style={{
-              width: "98%",
-              height: width - 100,
-              borderRadius: 5,
-              marginBottom: 10,
-              alignSelf: "center",
-            }}
+        {currentMessage.image ? (
+          <ImageComponent 
+            source={{uri:currentMessage.image}}
+            imgHeight={width - 150}
+            imgWidth={width - 30}
+            style={{borderRadius: 10}}
           />
         ) : null}
         <TextMessage
@@ -106,7 +121,7 @@ export function RenderSystemMessage({ newProps }) {
             fontSize: fontSize,
           }}
         >
-          {props?.currentMessage?.text}
+          {currentMessage?.text}
         </TextMessage>
         <View style={styles.containerFooter}>
           <Text
@@ -118,52 +133,57 @@ export function RenderSystemMessage({ newProps }) {
               ...styles.name,
             }}
           >
-            {idUser !== 1 ? myName : props.currentMessage.user.name}
+            {idUser !== 1 ? myName : currentMessage.user.name}
           </Text>
           <RenderTime props={props} />
         </View>
       </TouchableOpacity>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "flex-end",
-          paddingRight: 10,
-          marginBottom: 10,
-          marginTop: 5,
-        }}
-      >
-          {props.currentMessage.text && (
+      {animationIconMsg !== ANIMATION_OUT_ICONS_MSG && (
+        <Animatable.View
+          animation={animationIconMsg}
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            paddingRight: 10,
+            marginBottom: 10,
+            marginTop: 5,
+          }}
+        >
+          {currentMessage.text && (
             <IconSystemMessage
               onPress={() => {
-                CopyText(newProps.props.currentMessage.text, "Copier");
+                CopyText(currentMessage.text, "Copier");
               }}
               icon="content-copy"
               name="Copier"
             />
           )}
-          {props.currentMessage.image && (
+          {currentMessage.image && (
             <IconSystemMessage
-              onPress={async () => {await saveFile(props.currentMessage.image)}}
+              onPress={async () => {
+                await saveFile(currentMessage.image);
+              }}
               icon="download"
               name="Enregister"
             />
           )}
-          {props.currentMessage.image && (
+          {currentMessage.image && (
             <IconSystemMessage
-              onPress={async () => await shareImage(props.currentMessage.image)}
+              onPress={async () => await shareImage(currentMessage.image)}
               icon="share"
               name="Partager"
             />
           )}
           <IconSystemMessage
             onPress={() => {
-              newProps.deleteMessage(newProps.props.currentMessage._id);
+              newProps.deleteMessage(currentMessage._id);
             }}
             icon="delete"
             name="Supprimer"
             color="red"
           />
-      </View>
+        </Animatable.View>
+      )}
     </>
   );
 }

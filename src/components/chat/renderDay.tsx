@@ -14,7 +14,7 @@ export const renderDay = (props) => {
 
   return (
     <View style={{width: "100%", alignItems: 'center'}}>
-      <Text style={{fontFamily: "InterBold"}} >
+      <Text style={{fontFamily: "Medium", fontSize: 12}} >
         {dayjs(createdAt).locale("en").format("DD.MM.YYYY")}
       </Text>
     </View>

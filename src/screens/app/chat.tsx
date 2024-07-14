@@ -13,7 +13,6 @@ import { NavBar } from "@/components/navbar";
 import AccessoryBar from "@/components/accessoryBar";
 import CustomActions from "@/components/customActions";
 import { renderDay } from "@/components/chat/renderDay";
-import { RenderBubble } from "@/components/chat/renderBubble";
 import { useTheme } from "react-native-paper";
 import { RenderSystemMessage } from "@/components/chat/renderSystemMessage";
 import { RenderInputToolbar } from "@/components/chat/renderInputTollbar";
@@ -298,7 +297,6 @@ export function ChatScreen({ navigation, route }) {
           scrollToBottomComponent={() => <IcoScrollToBottom />}
           renderInputToolbar={(props) => <RenderInputToolbar props={props} />}
           renderDay={renderDay}
-          renderBubble={(props) => <RenderBubble props={props} />}
           renderAccessory={renderAccessory}
           renderSystemMessage={(props) => {
             const newProps = {

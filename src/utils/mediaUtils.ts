@@ -1,3 +1,8 @@
+import { Vibration } from "react-native"
+
+export function vibrationAlert(duration: number | number[]){
+  Vibration.vibrate(duration, true)
+}
 
 export default async function getPermissionAsync(
 ) {

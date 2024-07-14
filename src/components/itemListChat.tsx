@@ -1,19 +1,60 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
   TouchableOpacity
 } from "react-native";
 import { Text, useTheme, Avatar } from "react-native-paper";
+import { useSQLiteContext } from "expo-sqlite/next";
+import { createTableImage, getProfileByName, savedProfileAi } from "@/utils/database_image";
+import { downloadImageAsync } from "@/utils/image";
+import * as Crypto from "expo-crypto";
+
+const TABLENAME_PROFILE_AI = "proofile_table"
 
 export function ItemListChat({item, onNavigateToChatScreen}){
   const theme = useTheme()
-  const onLongPress = () => {
+  const db = useSQLiteContext()
+  const [profileImg, setProfileImg] = useState(item.url)
+  const name = item.name
+
+  const getProfileOrSaved = async () => {
+    const lowername = name.toLowerCase()
+    const uuid_image = Crypto.randomUUID()
+    const profile = await getProfileByName(db, TABLENAME_PROFILE_AI, lowername)
+    if (!profile){
+      const res = await downloadImageAsync(profileImg)
+      if (res?.uri){
+        await savedProfileAi(
+          db,
+          TABLENAME_PROFILE_AI,
+          {
+            id: uuid_image,
+            name: lowername,
+            image: res.uri,
+          }
+        )
+      }
+    }
+    else{
+      setProfileImg(profile.image)
+    }
+  }
+
+  useEffect(() => {
+    (async () => {
+      await createTableImage(db, TABLENAME_PROFILE_AI)
+      // await getProfileOrSaved()
+    })()
+  }, [])
+
+  const onLongPress = async () => {
     
   }
 
-  const onPress = () => {
+  const onPress = async () => {
     onNavigateToChatScreen()
+
   }
     
   return (
@@ -25,7 +66,7 @@ export function ItemListChat({item, onNavigateToChatScreen}){
   >
     <View style={{flexDirection: 'row'}} >
       <Avatar.Image 
-        source={{uri: item.url}} 
+        source={{uri: profileImg}} 
         size={50}
         style={{
           backgroundColor: theme.colors.primaryContainer

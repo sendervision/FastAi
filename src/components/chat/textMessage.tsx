@@ -83,6 +83,7 @@ export function TextMessage({ children, ...props }) {
     return (
       <ParsedText
         key={index}
+        selectable={false}
         parse={[
           {
             type: "url",

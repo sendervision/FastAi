@@ -6,11 +6,13 @@ import * as Animatable from "react-native-animatable";
 import { CopyText } from "@/utils/clipboard";
 import { DataPromptImage } from "@/utils/prompts_image";
 import { Head } from "@/components/head";
+import { LightBox } from "@alantoa/lightbox";
 
-const { height } = Dimensions.get("window");
-const HEIGHT_IMAGE_PROMPT = height / 4;
+const { height, width } = Dimensions.get("window");
+const HEIGHT_IMAGE_PROMPT = height / 3.5;
 const ANIMATION_IN_LOADER = "bounceIn";
 const ANIMATION_OUT_LOADER = "bounceOut";
+const WIDTH_CARD = width - 10;
 
 function shuffle(array: any[]): any[] {
   const new_array = [...array];
@@ -76,19 +78,26 @@ const CoverCard = ({ item }) => {
   const [isLoadingImage, setIsLoadingImage] = useState(false);
   return (
     <>
-      <Card.Cover
-        source={{ uri: item.image }}
-        style={{
-          height: isLoadingImage ? 0 : HEIGHT_IMAGE_PROMPT,
-          backgroundColor: theme.colors.primaryContainer,
-        }}
-        onLoadStart={() => {
-          setIsLoadingImage(true);
-        }}
-        onLoadEnd={() => {
-          setIsLoadingImage(false);
-        }}
-      />
+      <LightBox
+        height={isLoadingImage ? 0 : HEIGHT_IMAGE_PROMPT}
+        width={WIDTH_CARD}
+        imgLayout={{width: width, height: width}}
+        containerStyle={{alignSelf: "center"}}
+      >
+        <Card.Cover
+          source={{ uri: item.image }}
+          style={{
+            height: "100%", // isLoadingImage ? 0 : HEIGHT_IMAGE_PROMPT,
+            backgroundColor: theme.colors.primaryContainer,
+          }}
+          onLoadStart={() => {
+            setIsLoadingImage(true);
+          }}
+          onLoadEnd={() => {
+            setIsLoadingImage(false);
+          }}
+        />
+      </LightBox>
       {isLoadingImage && (
         <View
           style={{
@@ -208,8 +217,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   card: {
+    width: WIDTH_CARD,
     marginVertical: 5,
-    marginHorizontal: 5,
+    alignSelf: "center"
   },
   cardTitle: {
     fontSize: 16,

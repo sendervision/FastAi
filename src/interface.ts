@@ -32,3 +32,9 @@ export interface Chat {
   id: number;
   title: string;
 }
+
+export interface ProfileAI {
+  id: string;
+  name: string;
+  image: string
+}
