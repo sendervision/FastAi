@@ -66,14 +66,16 @@ function ComponentExamplePrompt({ prompt, title, onPressIcon, noIcon }) {
           {prompt.length > 90 ? prompt.slice(0, 100) + "..." : prompt}
         </Text>
       </Pressable>
-      {!noIcon && (
-        <IconButton
-          icon={"arrow-right"}
-          iconColor={theme.colors.onSurface}
-          style={{ alignSelf: "flex-end" }}
-          onPress={onPressIcon}
-        />
-      )}
+      <View style={{height: "20%", justifyContent: 'center'}}>
+        {!noIcon && (
+          <IconButton
+            icon={"arrow-right"}
+            iconColor={theme.colors.onSurface}
+            style={{ alignSelf: "flex-end" }}
+            onPress={onPressIcon}
+          />
+        )}
+      </View>
     </View>
   );
 }

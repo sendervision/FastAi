@@ -5,7 +5,6 @@ import { darkBlue } from "@/theme/blue";
 import { NavigationContainer } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { RootSiblingParent } from "react-native-root-siblings";
 import { StatusBar } from "expo-status-bar";
 import { SQLiteProvider } from "expo-sqlite/next";
 import { LightBoxProvider } from "@alantoa/lightbox";
@@ -18,26 +17,24 @@ export default function DBME({ onLayoutRootView }) {
   };
 
   return (
-    <RootSiblingParent>
-      <SQLiteProvider databaseName="convesation.db">
-        <PaperProvider theme={theme}>
-          <NavigationContainer>
-            <GestureHandlerRootView style={{ flex: 1 }}>
-              <LightBoxProvider>
-                <BottomSheetModalProvider>
-                  <StatusBar
-                    style="light"
-                    backgroundColor={theme.colors.secondary}
-                  />
-                  <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-                    <Navigation />
-                  </View>
-                </BottomSheetModalProvider>
-              </LightBoxProvider>
-            </GestureHandlerRootView>
-          </NavigationContainer>
-        </PaperProvider>
-      </SQLiteProvider>
-    </RootSiblingParent>
+    <SQLiteProvider databaseName="convesation.db">
+      <PaperProvider theme={theme}>
+        <NavigationContainer>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <LightBoxProvider>
+              <BottomSheetModalProvider>
+                <StatusBar
+                  style="light"
+                  backgroundColor={theme.colors.secondary}
+                />
+                <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+                  <Navigation />
+                </View>
+              </BottomSheetModalProvider>
+            </LightBoxProvider>
+          </GestureHandlerRootView>
+        </NavigationContainer>
+      </PaperProvider>
+    </SQLiteProvider>
   );
 }

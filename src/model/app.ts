@@ -117,20 +117,12 @@ export async function _gpt(
   }
 }
 
-export async function gptOnline(prompt: string): Promise<string | any> {
-  try {
-    const response = await gpt.gptOnline({ prompt });
-    if (response.code === 200) return response.gpt;
-    else throw new Error();
-  } catch (error) {
-    return ErrorResponse();
-  }
-}
-
 export async function bing(prompt: string): Promise<string | any> {
   try {
     const response = await gpt.bing({ prompt });
-    if (response.code === 200) return response.message;
+    if (response.code === 200){
+      return response.message;
+    }
     else throw new Error();
   } catch (error) {
     return ErrorResponse();
@@ -167,7 +159,6 @@ export async function _prodia(prompt: string) {
 
     return images;
   } catch (error) {
-    console.log(error);
     return ErrorResponse();
   }
 }
@@ -193,7 +184,9 @@ export async function stablediffusion(prompt: string) {
  * @param {string} prompt
  * @returns {list} list[base64] image
  */
-export async function stablediffusionV2(prompt: string) {
+export async function stablediffusionV2(
+  prompt: string
+): Promise<Buffer[] | any> {
   try {
     const response = await gpt.stablediffusionV2({
       prompt,

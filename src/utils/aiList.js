@@ -1,7 +1,7 @@
 import {
   Chat,
   _gpt,
-  gptOnline,
+  bing,
   AiIcon,
   dalleV1,
   dalleV2,
@@ -49,7 +49,7 @@ export const listAi = [
     url: "https://upload.wikimedia.org/wikipedia/commons/c/ce/Bing_New_Logo.png",
     model: "text",
     models: ["bing"],
-    func: [Chat, gptOnline]
+    func: [bing, Chat]
   },
   {
     name: "HercAi",

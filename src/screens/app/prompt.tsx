@@ -1,17 +1,24 @@
-import React, { useState, useCallback } from "react";
-import { Text, View, StyleSheet, FlatList, Dimensions, Pressable } from "react-native";
+import React, { useState, useCallback, useEffect } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  Dimensions,
+  Pressable,
+} from "react-native";
 import { useTheme, Card, Button, Icon } from "react-native-paper";
 import { Chase, Circle } from "react-native-animated-spinkit";
 import * as Animatable from "react-native-animatable";
 import { CopyText } from "@/utils/clipboard";
 import { DataPromptImage } from "@/utils/prompts_image";
 import { Head } from "@/components/head";
-import { LightBox } from "@alantoa/lightbox";
+import { ImageComponent } from "@/components/ImageComponent";
+import { ModalSelectModelImage } from "@/components/modelSelectModelImage";
 
 const { height, width } = Dimensions.get("window");
 const HEIGHT_IMAGE_PROMPT = height / 3.5;
 const ANIMATION_IN_LOADER = "bounceIn";
-const ANIMATION_OUT_LOADER = "bounceOut";
 const WIDTH_CARD = width - 10;
 
 function shuffle(array: any[]): any[] {
@@ -31,15 +38,15 @@ function shuffle(array: any[]): any[] {
   return new_array;
 }
 
-function CardContent({item}) {
-  const theme =  useTheme()
-  const [typeLengthTextPrompt, setTypeLengthPrompt] = useState("min")
+function CardContent({ item }) {
+  const theme = useTheme();
+  const [typeLengthTextPrompt, setTypeLengthPrompt] = useState("min");
 
   const textPrompt = useCallback(() => {
-    if(typeLengthTextPrompt === 'min' && item.prompt.length > 200){
-      return item.prompt.slice(0, 200) + "..."
-    }else return item.prompt
-  }, [typeLengthTextPrompt])
+    if (typeLengthTextPrompt === "min" && item.prompt.length > 200) {
+      return item.prompt.slice(0, 200) + "...";
+    } else return item.prompt;
+  }, [typeLengthTextPrompt]);
 
   return (
     <Card.Content>
@@ -54,8 +61,8 @@ function CardContent({item}) {
         Prompt
       </Text>
       <Pressable
-        onPress={() =>{
-          setTypeLengthPrompt(typeLengthTextPrompt === "min"? "max" : "min")
+        onPress={() => {
+          setTypeLengthPrompt(typeLengthTextPrompt === "min" ? "max" : "min");
         }}
       >
         <Text
@@ -74,30 +81,18 @@ function CardContent({item}) {
 }
 
 const CoverCard = ({ item }) => {
-  const theme = useTheme()
+  const theme = useTheme();
   const [isLoadingImage, setIsLoadingImage] = useState(false);
   return (
     <>
-      <LightBox
-        height={isLoadingImage ? 0 : HEIGHT_IMAGE_PROMPT}
-        width={WIDTH_CARD}
-        imgLayout={{width: width, height: width}}
-        containerStyle={{alignSelf: "center"}}
-      >
-        <Card.Cover
-          source={{ uri: item.image }}
-          style={{
-            height: "100%", // isLoadingImage ? 0 : HEIGHT_IMAGE_PROMPT,
-            backgroundColor: theme.colors.primaryContainer,
-          }}
-          onLoadStart={() => {
-            setIsLoadingImage(true);
-          }}
-          onLoadEnd={() => {
-            setIsLoadingImage(false);
-          }}
-        />
-      </LightBox>
+      <ImageComponent
+        source={{ uri: item.image }}
+        imgHeight={isLoadingImage ? 0 : HEIGHT_IMAGE_PROMPT}
+        imgWidth={WIDTH_CARD}
+        onLoadStart={() => setIsLoadingImage(true)}
+        onLoadEnd={() => setIsLoadingImage(false)}
+        style={{ borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
+      />
       {isLoadingImage && (
         <View
           style={{
@@ -113,37 +108,63 @@ const CoverCard = ({ item }) => {
   );
 };
 
-export function PromptScreen() {
+const ButtonModelSelector = () => {
   const theme = useTheme();
-  const [nameAnimationLoader, setNameAnimationLoader] = useState("");
+  const [isVisibleModal, setIsVisibleModal] = useState(false);
+  const viewModel = () => {
+    setIsVisibleModal(true)
+  }
+  return (
+    <>
+      <ModalSelectModelImage
+        visible={isVisibleModal}
+        setVisible={setIsVisibleModal}
+      />
+      <Button
+        buttonColor={theme.colors.onSurface}
+        onPress={viewModel}
+        labelStyle={[
+          styles.cardLabelButton,
+          {
+            color: theme.colors.primaryContainer,
+          },
+        ]}
+        style={{
+          paddingVertical: 2, marginLeft: 5
+        }}
+      >
+        Utiliser ce prompt
+      </Button>
+    </>
+  );
+};
+
+export function PromptScreen({ navigation }) {
+  const theme = useTheme();
   const [countPrompts, setCountPrompts] = useState(5);
 
   const listData = useCallback(() => {
     return DataPromptImage.slice(0, countPrompts);
   }, [countPrompts]);
 
-  const ListFooterLoader = () => {
-    if (nameAnimationLoader) {
-      return (
-        <Animatable.View animation={nameAnimationLoader}>
-          <Circle
-            color={theme.colors.primaryContainer}
-            size={50}
-            style={{ alignSelf: "center" }}
-          />
-        </Animatable.View>
-      );
-    }
+  const FooterLoader = () => {
+    return (
+      <Animatable.View animation={ANIMATION_IN_LOADER}>
+        <Circle
+          color={theme.colors.primaryContainer}
+          size={50}
+          style={{ alignSelf: "center" }}
+        />
+      </Animatable.View>
+    );
   };
 
   // Simule un scroll infini
   const requestData = () => {
     if (countPrompts < DataPromptImage.length) {
-      setNameAnimationLoader(ANIMATION_IN_LOADER);
       const searchTimeout = setTimeout(() => {
         setCountPrompts(countPrompts + 5);
-        setNameAnimationLoader(ANIMATION_OUT_LOADER);
-      }, 5000);
+      }, 3000);
       return () => clearTimeout(searchTimeout);
     }
   };
@@ -160,13 +181,13 @@ export function PromptScreen() {
         data={listData()}
         keyExtractor={(item, index) => item.title + index}
         style={{ marginVertical: 5 }}
-        initialNumToRender={5}
+        // initialNumToRender={5}
         onEndReached={requestData}
-        ListFooterComponent={ListFooterLoader}
+        ListFooterComponent={() => <FooterLoader />}
         ListFooterComponentStyle={{ marginBottom: 10 }}
         renderItem={({ item }) => {
           return (
-            <Animatable.View animation={"fadeInLeft"}>
+            <Animatable.View animation={"fadeIn"}>
               <Card
                 style={[
                   styles.card,
@@ -191,17 +212,7 @@ export function PromptScreen() {
                   >
                     Copier
                   </Button>
-                  <Button
-                    buttonColor={theme.colors.onSurface}
-                    labelStyle={[
-                      styles.cardLabelButton,
-                      {
-                        color: theme.colors.primaryContainer,
-                      },
-                    ]}
-                  >
-                    Utiliser ce prompt
-                  </Button>
+                  <ButtonModelSelector />
                 </Card.Actions>
               </Card>
             </Animatable.View>
@@ -219,7 +230,7 @@ const styles = StyleSheet.create({
   card: {
     width: WIDTH_CARD,
     marginVertical: 5,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   cardTitle: {
     fontSize: 16,

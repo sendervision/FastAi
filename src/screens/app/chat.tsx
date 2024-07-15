@@ -1,5 +1,5 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useCallback, useEffect, useReducer, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Platform, StyleSheet, View, Keyboard } from "react-native";
 import {
   GiftedChat,
@@ -8,11 +8,9 @@ import {
   SendProps,
 } from "react-native-gifted-chat";
 import { useSQLiteContext } from "expo-sqlite/next";
-import * as Crypto from "expo-crypto";
 import { NavBar } from "@/components/navbar";
-import AccessoryBar from "@/components/accessoryBar";
 import CustomActions from "@/components/customActions";
-import { renderDay } from "@/components/chat/renderDay";
+import { RenderDay } from "@/components/chat/renderDay";
 import { useTheme } from "react-native-paper";
 import { RenderSystemMessage } from "@/components/chat/renderSystemMessage";
 import { RenderInputToolbar } from "@/components/chat/renderInputTollbar";
@@ -25,88 +23,17 @@ import {
   saveMessage,
 } from "@/utils/database";
 import { showToast } from "@/utils/toast";
-import { imageBase64ToImage } from "@/utils/image";
-import { useInputMessage, useUser } from "@/context/hook";
+import { useInputMessage } from "@/context/hook";
 import { BannerInfoBot } from "@/components/chat/bannerInfoBot";
 import { RenderChatFooter } from "@/components/chat/renderChatFooter";
-import { useFuncBot } from "@/utils/utilsNavigation";
-
-const otherUser = {
-  _id: 2,
-  name: "React Native",
-  avatar: "https://facebook.github.io/react/img/logo_og.png",
-};
-
-interface IState {
-  messages: any[];
-  step: number;
-  loadEarlier?: boolean;
-  isLoadingEarlier?: boolean;
-  isTyping: boolean;
-}
-
-enum ActionKind {
-  SEND_MESSAGE = "SEND_MESSAGE",
-  LOAD_EARLIER_MESSAGES = "LOAD_EARLIER_MESSAGES",
-  LOAD_EARLIER_START = "LOAD_EARLIER_START",
-  SET_IS_TYPING = "SET_IS_TYPING",
-  // LOAD_EARLIER_END = 'LOAD_EARLIER_END',
-}
-
-// An interface for our actions
-interface StateAction {
-  type: ActionKind;
-  payload?: any;
-}
-
-function reducer(state: IState, action: StateAction) {
-  switch (action.type) {
-    case ActionKind.SEND_MESSAGE: {
-      return {
-        ...state,
-        step: state.step + 1,
-        messages: action.payload,
-      };
-    }
-    case ActionKind.LOAD_EARLIER_MESSAGES: {
-      return {
-        ...state,
-        loadEarlier: true,
-        isLoadingEarlier: false,
-        messages: action.payload,
-      };
-    }
-    case ActionKind.LOAD_EARLIER_START: {
-      return {
-        ...state,
-        isLoadingEarlier: true,
-      };
-    }
-    case ActionKind.SET_IS_TYPING: {
-      return {
-        ...state,
-        isTyping: action.payload,
-      };
-    }
-  }
-}
-
-function getMessageFomat(message): MessageDB {
-  return {
-    _id: message._id,
-    text: message.text,
-    createdAt: message.createdAt.toString(),
-    image: message?.image,
-    user_id: message.user._id.toString(),
-    name: message.user.name,
-  };
-}
+import { RenderTyping } from "@/components/chat/renderTyping";
+import { requestResponseSendResponse } from "@/utils/aiMessage";
 
 export function ChatScreen({ navigation, route }) {
+  const messageContainerRef = useRef(null)
   const theme = useTheme();
   const bot: Bot = route.params.item;
   // Liste des fonctions qui permet rechercher des réponses
-  const func_request_response = useFuncBot((state) => state.func);
   const tablename = bot?.name
     .toLocaleLowerCase()
     .replace(/[^\w\s]/gi, "")
@@ -118,15 +45,9 @@ export function ChatScreen({ navigation, route }) {
     _id: 1,
   };
   const [messages, setMessages] = useState([]);
-  const [state, dispatch] = useReducer(reducer, {
-    messages: [],
-    step: 0,
-    loadEarlier: true,
-    isLoadingEarlier: false,
-    isTyping: false,
-  });
   const inputMessage = useInputMessage((state) => state.inputMessage);
   const setInputMessage = useInputMessage((state) => state.setInputMessage);
+  const [isTyping, setIsTyping] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -134,47 +55,6 @@ export function ChatScreen({ navigation, route }) {
       await loadMessages();
     })();
   }, []);
-
-  const getFormatMessage = (
-    text: string = "",
-    image: string = ""
-  ): IMessage => {
-    return {
-      _id: Crypto.randomUUID(),
-      text: text,
-      createdAt: new Date(),
-      image: image,
-      system: true,
-      user: { _id: 2, name: bot.name },
-    };
-  };
-
-  const requestResponse = useCallback(
-    async (prompt: string): Promise<IMessage[]> => {
-      const listMessages = [];
-      try {
-        const response = await func_request_response[0](prompt);
-        if (bot.model === "text") {
-          if (!response[0]) throw Error();
-          listMessages.push(getFormatMessage(response, ""));
-        } else if (bot.model === "image") {
-          for (let imageBase64 of response) {
-            const image = await imageBase64ToImage(
-              imageBase64,
-              Crypto.randomUUID()
-            );
-            listMessages.push(getFormatMessage("", image));
-          }
-        }
-      } catch (error) {
-        console.log("error req func: ", error.message);
-        listMessages.push(getFormatMessage("Erreur please try later...", ""));
-      } finally {
-        return listMessages;
-      }
-    },
-    []
-  );
 
   const loadMessages = useCallback(async () => {
     let messagesDB = await getAllMessage(db, tablename);
@@ -200,36 +80,36 @@ export function ChatScreen({ navigation, route }) {
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
     );
-    const { _id, text, createdAt, image, user_id, name } = getMessageFomat(
-      messages[0]
-    );
-    await saveMessage(db, tablename, {
-      _id,
-      text,
-      createdAt,
-      image,
-      user_id,
-      name,
-    });
   }, []);
 
   const onSendMessageAndRequestResponse = useCallback(
     async (messages: IMessage[]) => {
+      setIsTyping(true)
       const { text } = messages[0];
-      setIsTyping(true);
+      Keyboard.dismiss()
       await onSend(messages);
-      const msgResponseBot: IMessage[] = await requestResponse(text);
-      setIsTyping(false);
-      await onSend(msgResponseBot);
+      saveMessage(
+        db,
+        tablename,
+        {
+          _id: messages[0]._id,
+          text: messages[0].text,
+          createdAt: new Date().toString(),
+          image: messages[0].image,
+          name: messages[0].user.name,
+          user_id: user._id
+        }
+      )
+      await requestResponseSendResponse(
+        db,
+        tablename,
+        text,
+        bot,
+        setIsTyping,
+        onSend
+      )
     },
     []
-  );
-
-  const setIsTyping = useCallback(
-    (isTyping: boolean) => {
-      reducer(state, { type: ActionKind.SET_IS_TYPING, payload: isTyping });
-    },
-    [dispatch]
   );
 
   const onSendFromUser = useCallback(
@@ -240,22 +120,12 @@ export function ChatScreen({ navigation, route }) {
         user,
         createdAt,
         system: true,
-        _id: Math.round(Math.random() * 1000000),
+        _id: Math.round(Math.random() * 1_000_000),
       }));
-
       onSend(messagesToUpload);
     },
     [onSend]
   );
-
-  const renderAccessory = useCallback(() => {
-    return (
-      <AccessoryBar
-        onSend={onSendFromUser}
-        isTyping={() => setIsTyping(true)}
-      />
-    );
-  }, [onSendFromUser, setIsTyping]);
 
   const renderCustomActions = useCallback(
     (props) =>
@@ -281,11 +151,13 @@ export function ChatScreen({ navigation, route }) {
       <BannerInfoBot bot={bot} />
       <View style={styles.content}>
         <GiftedChat
+          messageContainerRef={messageContainerRef}
           placeholder="Prompt..."
           text={inputMessage}
           onInputTextChanged={setInputMessage}
           messages={messages}
           maxInputLength={2048}
+          isTyping={isTyping}
           onSend={onSendMessageAndRequestResponse}
           showUserAvatar={false}
           timeFormat="LT"
@@ -293,11 +165,11 @@ export function ChatScreen({ navigation, route }) {
           bottomOffset={5}
           messagesContainerStyle={{ backgroundColor: theme.colors.background }}
           user={user}
-          scrollToBottom
+          scrollToBottom={true}
           scrollToBottomComponent={() => <IcoScrollToBottom />}
           renderInputToolbar={(props) => <RenderInputToolbar props={props} />}
-          renderDay={renderDay}
-          renderAccessory={renderAccessory}
+          renderDay={props => <RenderDay props={props} theme={theme} />}
+          // renderAccessory={renderAccessory}
           renderSystemMessage={(props) => {
             const newProps = {
               props: props,
@@ -307,6 +179,7 @@ export function ChatScreen({ navigation, route }) {
           }}
           renderActions={renderCustomActions}
           renderSend={renderSend}
+          renderFooter={() => isTyping && <RenderTyping name={bot.name} />}
           renderChatFooter={() => <RenderChatFooter bot={bot} />}
           isCustomViewBottom
           scrollToBottomStyle={{ backgroundColor: theme.colors.tertiary }}

@@ -20,7 +20,7 @@ export interface Bot {
 }
 
 export interface Message {
-  _id: string;
+  _id: string | number;
   text: string;
   createdAt: string;
   image?: string;

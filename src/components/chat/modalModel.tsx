@@ -7,16 +7,21 @@ import {
   RadioButton,
   IconButton,
   Tooltip,
+  Button,
 } from "react-native-paper";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { useModel } from "@/context/hook";
 
 export function ModalModel({ visible, setVisible, models }) {
   const theme = useTheme();
-  const [valueSelected, setValueSelected] = React.useState(models[0]);
-  const hideDialog = () => setVisible(false);
+  const { updateModel, model } = useModel();
+  const [valueSelected, setValueSelected] = React.useState(model? model : models[0]);
 
-  const { updateModel } = useModel();
+  const hideDialog = () => setVisible(false);
+  const validate = () => {
+    updateModel({ model: valueSelected });
+    hideDialog()
+  }
 
   return (
     <Portal>
@@ -53,27 +58,16 @@ export function ModalModel({ visible, setVisible, models }) {
               alignSelf: "center",
             }}
           >
-            <Tooltip title="Fermer">
-              <IconButton
-                icon={"selection-ellipse-remove"}
-                iconColor={theme.colors.primary}
-                size={30}
-                onPress={hideDialog}
-              />
-            </Tooltip>
           </View>
         </View>
         <Dialog.Content>
           <RadioButton.Group
             onValueChange={(value) => {
               setValueSelected(value);
-              updateModel({ model: value });
             }}
             value={valueSelected}
           >
-            <ScrollView
-              style={{ maxHeight: "90%" }}
-            >
+            <ScrollView style={{ maxHeight: "90%" }}>
               {models.map((mdl, index) => (
                 <RadioButton.Item
                   key={index}
@@ -93,6 +87,28 @@ export function ModalModel({ visible, setVisible, models }) {
             </ScrollView>
           </RadioButton.Group>
         </Dialog.Content>
+        <Dialog.Actions>
+          <Button
+            labelStyle={{
+              fontFamily: "Medium",
+              color: theme.colors.primaryContainer,
+            }}
+            onPress={hideDialog}
+          >
+            Annuler
+          </Button>
+          <Button
+            mode="contained"
+            labelStyle={{
+              fontFamily: "Medium",
+              color: theme.colors.primaryContainer,
+            }}
+            onPress={() => validate()}
+            style={{ backgroundColor: theme.colors.tertiary, borderRadius: 10 }}
+          >
+            Valider
+          </Button>
+        </Dialog.Actions>
       </Dialog>
     </Portal>
   );

@@ -3,7 +3,6 @@ export const typePrompt = [
   "Business",
   "Programmation",
   "Apprentissage",
-  "Image",
   "Proverbe",
   "Ecrivain",
   "Marketing",
@@ -11,7 +10,6 @@ export const typePrompt = [
   "Personnel",
   "Scientifique",
   "Réseaux Sociaux",
-  "Ai Art",
 ];
 
 export const prompts = {
@@ -34,11 +32,6 @@ export const prompts = {
     "Quel sont les métiers que je peux apprendre en tant qu'etudiant?",
     "Est-ce que tu peux m'apprendre l'anglais?",
     "Comment faire pour apprendre plus vite?",
-  ],
-  Image: [
-    "A cat in space",
-    "A cat that draw the portrait of another cat",
-    "A village",
   ],
   Proverbe: [
     "Donne moi un proverbe aléatoire mais populaire",
@@ -89,15 +82,5 @@ export const prompts = {
     "Créez une idée de défi TikTok accrocheuse promouvant la sensibilisation à l'environnement.",
     "Développez une publication Facebook sensibilisant à l’adoption d’animaux.",
     "Créez un script TikTok encourageant les gens à essayer de nouveaux passe-temps",
-  ],
-  "Ai Art": [
-    "A serene landscape depicting the harmony between technology and nature",
-    "A vibrant city at night, illuminated by neon lights and bustling with life.",
-    "A surreal depiction of time travel, blending historical and futuristic elements.",
-    "An abstract representation of emotions, using bold colors and dynamic shapes.",
-    "A portrait of an ancient civilization thriving on Mars.",
-    "A whimsical forest filled with bioluminescent plants and animals.",
-    "The bustling streets of a futuristic city designed with sustainability in mind.",
-    "A dynamic scene capturing the energy of a music festival.",
-  ],
+  ]
 };

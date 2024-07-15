@@ -10,7 +10,6 @@ import { Text, useTheme } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 import dayjs from "dayjs";
 import * as Animatable from "react-native-animatable";
-import { LightBox } from '@alantoa/lightbox'
 import { IconSystemMessageType } from "@/interface";
 import { TextMessage } from "./textMessage";
 import { CopyText } from "@/utils/clipboard";
@@ -22,6 +21,7 @@ const { width } = Dimensions.get("window");
 const ANIMATION_IN_ICONS_MSG = "fadeIn";
 const ANIMATION_OUT_ICONS_MSG = "fadeOut";
 const TIME_CLOSE_ICON_MSG = 20 // en séconde
+const DELAY_VIBRATION = 50
 
 function IconSystemMessage({ onPress, icon }: IconSystemMessageType) {
   const theme = useTheme();
@@ -40,7 +40,6 @@ export function RenderSystemMessage({ newProps }) {
   const myName = currentMessage.user.name;
   const fontSize = 13;
   const [animationIconMsg, setAnimationIconMsg] = useState(ANIMATION_OUT_ICONS_MSG);
-
   const RenderTime = ({ props }) => {
     const { createdAt } = currentMessage;
     let hour = dayjs(createdAt).hour().toString();
@@ -70,7 +69,7 @@ export function RenderSystemMessage({ newProps }) {
     if (animationIconMsg === ANIMATION_IN_ICONS_MSG) {
       return onPressMsg();
     }
-    vibrationAlert(100);
+    vibrationAlert(DELAY_VIBRATION);
     setAnimationIconMsg(ANIMATION_IN_ICONS_MSG);
     const timeoutIcon = setTimeout(() => {
       setAnimationIconMsg(ANIMATION_OUT_ICONS_MSG);
@@ -81,7 +80,7 @@ export function RenderSystemMessage({ newProps }) {
   const onPressMsg = () => {
     if (animationIconMsg === ANIMATION_IN_ICONS_MSG) {
       setAnimationIconMsg(ANIMATION_OUT_ICONS_MSG);
-      vibrationAlert(100);
+      vibrationAlert(DELAY_VIBRATION);
     }
   };
 
@@ -96,9 +95,9 @@ export function RenderSystemMessage({ newProps }) {
           styles.containerMessage,
           {
             backgroundColor:
-              idUser !== 1
-                ? theme.colors.secondary
-                : theme.colors.primaryContainer,
+              idUser in [0, 1]
+                ? theme.colors.primaryContainer
+                : theme.colors.secondary,
           },
         ]}
       >
