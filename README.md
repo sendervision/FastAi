@@ -16,6 +16,7 @@ L'application a été développée avec les technologies suivantes :
 
 ## Capture d'écran
 ![Accueil](./Screenshot_20240810-235231.jpg)
+![List ai](./Screenshot_20240810-235238.jpg)
 
 ## Installation et configuration
 
