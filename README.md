@@ -14,6 +14,8 @@ L'application a été développée avec les technologies suivantes :
 - **React Native** : Pour la construction d'une interface utilisateur performante et multiplateforme.
 - **Expo** : Pour simplifier le développement, la gestion et le déploiement de l'application.
 
+## Capture d'écran
+
 ## Installation et configuration
 
 1. Clonez le dépôt :
