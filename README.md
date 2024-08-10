@@ -15,6 +15,7 @@ L'application a été développée avec les technologies suivantes :
 - **Expo** : Pour simplifier le développement, la gestion et le déploiement de l'application.
 
 ## Capture d'écran
+![Accueil](./Screenshot_20240810-235231.jpg)
 
 ## Installation et configuration
 
