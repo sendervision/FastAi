@@ -4,7 +4,7 @@ import { ErrorResponse } from "./errorResponse.js";
 import { Hercai } from "./hercai.js";
 import { RsnChat } from "./rnschat";
 
-const KEY = "rsnai_P9a7bTzqVxZfkvaFjkZ5PuZO";
+const KEY = "YOUR_RSNCHAT_KEY";
 const rsnchat = new RsnChat(KEY);
 const gpt = new GPT();
 export const NEGATIVE_PROMPT =
